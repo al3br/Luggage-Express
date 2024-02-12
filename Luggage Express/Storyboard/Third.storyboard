@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="21701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21679"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="Tajawal-Regular.ttf">
+            <string>Tajawal-Regular</string>
+        </array>
+    </customFonts>
+    <scenes>
+        <!--Live Chat-->
+        <scene sceneID="b85-sh-LOL">
+            <objects>
+                <viewController storyboardIdentifier="ChatViewController" id="eEM-Li-XEb" customClass="ChatViewController" customModule="Luggage_Express" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7gr-RC-eP4">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Live Chat" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lAD-op-sAi">
+                                <rect key="frame" x="10" y="59" width="373" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Vmu-gF-z0T">
+                                <rect key="frame" x="0.0" y="727" width="393" height="41"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Text Message..." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9NH-J2-0Xz">
+                                        <rect key="frame" x="0.0" y="0.0" width="345" height="40"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" image="paperplane.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="AXv-eQ-Ai7">
+                                        <rect key="frame" x="345" y="0.99999999999999645" width="48" height="40"/>
+                                        <color key="tintColor" name="Icons"/>
+                                    </imageView>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cil-gI-jdh">
+                                        <rect key="frame" x="345" y="0.0" width="48" height="41"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain"/>
+                                        <connections>
+                                            <action selector="sendMessage:" destination="eEM-Li-XEb" eventType="touchUpInside" id="Y3m-Ze-EId"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" name="Background"/>
+                                <constraints>
+                                    <constraint firstItem="9NH-J2-0Xz" firstAttribute="leading" secondItem="Vmu-gF-z0T" secondAttribute="leading" id="1N2-w0-jKn"/>
+                                    <constraint firstItem="cil-gI-jdh" firstAttribute="leading" secondItem="9NH-J2-0Xz" secondAttribute="trailing" id="99b-Y9-RdU"/>
+                                    <constraint firstAttribute="trailing" secondItem="AXv-eQ-Ai7" secondAttribute="trailing" id="BX1-wz-QIz"/>
+                                    <constraint firstItem="cil-gI-jdh" firstAttribute="top" secondItem="Vmu-gF-z0T" secondAttribute="top" id="Bza-bU-cKc"/>
+                                    <constraint firstItem="AXv-eQ-Ai7" firstAttribute="leading" secondItem="9NH-J2-0Xz" secondAttribute="trailing" id="Dib-Vm-bMl"/>
+                                    <constraint firstAttribute="trailing" secondItem="cil-gI-jdh" secondAttribute="trailing" id="HVo-tR-VQQ"/>
+                                    <constraint firstItem="AXv-eQ-Ai7" firstAttribute="leading" secondItem="9NH-J2-0Xz" secondAttribute="trailing" id="N3Q-Xg-f0R"/>
+                                    <constraint firstItem="9NH-J2-0Xz" firstAttribute="top" secondItem="Vmu-gF-z0T" secondAttribute="top" id="V4n-Bw-EjT"/>
+                                    <constraint firstItem="AXv-eQ-Ai7" firstAttribute="top" secondItem="Vmu-gF-z0T" secondAttribute="top" id="Wca-nV-JiE"/>
+                                    <constraint firstAttribute="bottom" secondItem="cil-gI-jdh" secondAttribute="bottom" id="r7n-Gp-mhu"/>
+                                </constraints>
+                            </view>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="MHS-5d-LNg">
+                                <rect key="frame" x="0.0" y="88" width="393" height="631"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="separatorColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="sectionIndexColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="sectionIndexBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="sectionIndexTrackingBackgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="BotMessageCell" rowHeight="115" id="H4F-ql-t1h" customClass="MessageCell" customModule="Luggage_Express" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="50" width="393" height="115"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="H4F-ql-t1h" id="wWB-UM-TNW">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="115"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="speech-bubble-left" translatesAutoresizingMaskIntoConstraints="NO" id="y84-DO-vUs">
+                                                    <rect key="frame" x="10" y="16" width="349" height="70"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bot Message" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5GB-Gr-DWk">
+                                                    <rect key="frame" x="6" y="24" width="373" height="73"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="Tajawal-Regular" family="Tajawal" pointSize="20"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="botMessageView" destination="wWB-UM-TNW" id="eS0-u0-ZBb"/>
+                                            <outlet property="messageLabel" destination="5GB-Gr-DWk" id="WgU-id-52Z"/>
+                                        </connections>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="UserMessageCell" rowHeight="86" id="ZQJ-kE-959" customClass="MessageCell" customModule="Luggage_Express" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="165" width="393" height="86"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZQJ-kE-959" id="ytt-hh-99P">
+                                            <rect key="frame" x="0.0" y="0.0" width="393" height="86"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Message" textAlignment="right" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fIH-AE-A98" customClass="PaddingLabel" customModule="Luggage_Express" customModuleProvider="target">
+                                                    <rect key="frame" x="204" y="10" width="181" height="67"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" name="Tajawal-Regular" family="Tajawal" pointSize="20"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </tableViewCellContentView>
+                                        <connections>
+                                            <outlet property="messageLabel" destination="fIH-AE-A98" id="RSg-i5-OyX"/>
+                                            <outlet property="userMessageView" destination="ytt-hh-99P" id="joZ-jj-9qk"/>
+                                        </connections>
+                                    </tableViewCell>
+                                </prototypes>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="DLf-ak-d2D"/>
+                        <color key="backgroundColor" name="Background"/>
+                        <constraints>
+                            <constraint firstItem="Vmu-gF-z0T" firstAttribute="trailing" secondItem="DLf-ak-d2D" secondAttribute="trailing" id="12n-VU-xKN"/>
+                            <constraint firstItem="9NH-J2-0Xz" firstAttribute="height" secondItem="7gr-RC-eP4" secondAttribute="height" multiplier="0.0469484" id="2Lj-eH-XKw"/>
+                            <constraint firstItem="lAD-op-sAi" firstAttribute="top" secondItem="DLf-ak-d2D" secondAttribute="top" id="8BD-HO-XHe"/>
+                            <constraint firstItem="lAD-op-sAi" firstAttribute="leading" secondItem="DLf-ak-d2D" secondAttribute="leading" constant="10" id="8Cf-lh-aEf"/>
+                            <constraint firstItem="DLf-ak-d2D" firstAttribute="trailing" secondItem="lAD-op-sAi" secondAttribute="trailing" constant="10" id="9yb-IR-6fd"/>
+                            <constraint firstItem="MHS-5d-LNg" firstAttribute="top" secondItem="lAD-op-sAi" secondAttribute="bottom" constant="8" id="Cu2-6l-HcU"/>
+                            <constraint firstItem="9NH-J2-0Xz" firstAttribute="width" secondItem="7gr-RC-eP4" secondAttribute="width" multiplier="0.877863" id="JhS-9O-5pj"/>
+                            <constraint firstItem="MHS-5d-LNg" firstAttribute="leading" secondItem="DLf-ak-d2D" secondAttribute="leading" id="M2y-FT-Obp"/>
+                            <constraint firstItem="Vmu-gF-z0T" firstAttribute="leading" secondItem="DLf-ak-d2D" secondAttribute="leading" id="OAB-FV-QYR"/>
+                            <constraint firstItem="DLf-ak-d2D" firstAttribute="bottom" secondItem="Vmu-gF-z0T" secondAttribute="bottom" constant="50" id="Rrz-0d-5tB"/>
+                            <constraint firstItem="Vmu-gF-z0T" firstAttribute="top" secondItem="MHS-5d-LNg" secondAttribute="bottom" constant="8" id="VFr-Zj-Tdj"/>
+                            <constraint firstItem="Vmu-gF-z0T" firstAttribute="trailing" secondItem="DLf-ak-d2D" secondAttribute="trailing" id="blm-o8-vWo"/>
+                            <constraint firstItem="Vmu-gF-z0T" firstAttribute="leading" secondItem="DLf-ak-d2D" secondAttribute="leading" id="dCZ-Sd-m8h"/>
+                            <constraint firstItem="AXv-eQ-Ai7" firstAttribute="height" secondItem="7gr-RC-eP4" secondAttribute="height" multiplier="0.0485133" id="nQt-hs-IIE"/>
+                            <constraint firstItem="Vmu-gF-z0T" firstAttribute="height" secondItem="7gr-RC-eP4" secondAttribute="height" multiplier="0.0481221" id="oVj-Bh-n07"/>
+                            <constraint firstItem="AXv-eQ-Ai7" firstAttribute="width" secondItem="7gr-RC-eP4" secondAttribute="width" multiplier="0.122137" id="sND-fI-6Ju"/>
+                            <constraint firstItem="DLf-ak-d2D" firstAttribute="trailing" secondItem="MHS-5d-LNg" secondAttribute="trailing" id="w2o-1k-5p5"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Live Chat" image="message" catalog="system" id="geE-Pd-FP4"/>
+                    <connections>
+                        <outlet property="messageTextField" destination="9NH-J2-0Xz" id="ZQr-8G-iXc"/>
+                        <outlet property="sendMessageIcon" destination="AXv-eQ-Ai7" id="cdT-l5-DtZ"/>
+                        <outlet property="tableView" destination="MHS-5d-LNg" id="gZE-md-mS1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yr3-dE-PbA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="771.75572519083971" y="1888.7323943661972"/>
+        </scene>
+        <!--TabBar-->
+        <scene sceneID="qAV-ri-mbi">
+            <objects>
+                <viewController storyboardIdentifier="sotabbar" title="TabBar" modalPresentationStyle="fullScreen" id="NTz-cx-eqc" customClass="TabBar" customModule="Luggage_Express" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="kV3-2M-ES0" customClass="test">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="0Lq-KR-QyU"/>
+                        <color key="backgroundColor" name="Background"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="zcS-Mp-zUH"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="rdl-8F-yPl" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2534" y="-2"/>
+        </scene>
+    </scenes>
+    <designables>
+        <designable name="fIH-AE-A98">
+            <size key="intrinsicContentSize" width="128.66666666666666" height="23.333333333333332"/>
+        </designable>
+    </designables>
+    <resources>
+        <image name="message" catalog="system" width="128" height="116"/>
+        <image name="paperplane.circle" catalog="system" width="128" height="123"/>
+        <image name="speech-bubble-left" width="752" height="752"/>
+        <namedColor name="Background">
+            <color red="0.96470588235294119" green="0.95294117647058818" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Icons">
+            <color red="0.33333333333333331" green="0.32941176470588235" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

@@ -1,0 +1,6 @@
+framework module Pods_Luggage_Express {
+  umbrella header "Pods-Luggage Express-umbrella.h"
+
+  export *
+  module * { export * }
+}

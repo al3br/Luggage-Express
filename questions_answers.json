@@ -1,0 +1,9 @@
+[
+    {"question":"How do I create a new account?","answer":"To create a new account, tap on the 'Sign Up' button on the home screen and fill out the required information."},
+    {"question":"Where can I find my profile settings?","answer":"You can access your profile settings by tapping on your profile icon located in the top right corner of the app."},
+    {"question":"How do I change my password?","answer":"To change your password, go to your profile settings, select the 'Change Password' option, and follow the prompts to update your password."},
+    {"question":"How can I recover my forgotten password?","answer":"If you've forgotten your password, tap on the 'Forgot Password' link on the login screen and follow the instructions to reset your password."},
+    {"question":"Where can I view my transaction history?","answer":"You can view your transaction history by navigating to the 'Transactions' section in the app menu."},
+    {"question":"How do I contact customer support?","answer":"For assistance, you can contact our customer support team through the 'Help' or 'Support' section in the app menu."},
+    {"question":"","answer":""}
+]
