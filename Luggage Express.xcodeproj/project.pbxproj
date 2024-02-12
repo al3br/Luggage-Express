@@ -44,15 +44,15 @@
 		308C5CCC2B6645550013579C /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308C5CCB2B6645550013579C /* EditProfileViewController.swift */; };
 		309EE6AD2B77970F00652DDD /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EE6AC2B77970F00652DDD /* PaddingLabel.swift */; };
 		309EE6B02B77DB3500652DDD /* OrderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EE6AF2B77DB3500652DDD /* OrderManager.swift */; };
+		309EE6B22B7AAFFF00652DDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 309EE6B12B7AAFFF00652DDD /* GoogleService-Info.plist */; };
+		309EE6B72B7AB03600652DDD /* Tajawal-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 309EE6B62B7AB03600652DDD /* Tajawal-Regular.ttf */; };
 		30B88B3B2B63A115002D24EE /* ServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B88B3A2B63A115002D24EE /* ServicesViewController.swift */; };
 		30B88B3D2B63C18B002D24EE /* ServiceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B88B3C2B63C18B002D24EE /* ServiceCollectionViewCell.swift */; };
 		30B88B412B63D5F3002D24EE /* FastArrivalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B88B402B63D5F3002D24EE /* FastArrivalViewController.swift */; };
 		30CC348A2B67FDF9004DE59C /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CC34892B67FDF9004DE59C /* Service.swift */; };
 		30CC348C2B68117B004DE59C /* BookArrivalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CC348B2B68117B004DE59C /* BookArrivalViewController.swift */; };
 		30CC348E2B6820FB004DE59C /* Airport.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30CC348D2B6820FB004DE59C /* Airport.swift */; };
-		58242B6A2B7AA337008DBFC5 /* Tajawal-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 58242B692B7AA337008DBFC5 /* Tajawal-Regular.ttf */; };
 		58242B6C2B7AA347008DBFC5 /* questions_answers.json in Resources */ = {isa = PBXBuildFile; fileRef = 58242B6B2B7AA347008DBFC5 /* questions_answers.json */; };
-		58FF69862B78D8770015852D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 58FF69852B78D8770015852D /* GoogleService-Info.plist */; };
 		5C54EC98167292DB5E8E7899 /* Pods_Luggage_Express.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 296CA90658D31B6DF2548E85 /* Pods_Luggage_Express.framework */; };
 /* End PBXBuildFile section */
 
@@ -92,6 +92,8 @@
 		308C5CCB2B6645550013579C /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		309EE6AC2B77970F00652DDD /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		309EE6AF2B77DB3500652DDD /* OrderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderManager.swift; sourceTree = "<group>"; };
+		309EE6B12B7AAFFF00652DDD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		309EE6B62B7AB03600652DDD /* Tajawal-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Tajawal-Regular.ttf"; path = "../../Downloads/Tajawal/Tajawal-Regular.ttf"; sourceTree = "<group>"; };
 		30B88B3A2B63A115002D24EE /* ServicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesViewController.swift; sourceTree = "<group>"; };
 		30B88B3C2B63C18B002D24EE /* ServiceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceCollectionViewCell.swift; sourceTree = "<group>"; };
 		30B88B402B63D5F3002D24EE /* FastArrivalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastArrivalViewController.swift; sourceTree = "<group>"; };
@@ -99,9 +101,7 @@
 		30CC348B2B68117B004DE59C /* BookArrivalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookArrivalViewController.swift; sourceTree = "<group>"; };
 		30CC348D2B6820FB004DE59C /* Airport.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Airport.swift; sourceTree = "<group>"; };
 		4405F7DD49A040E0C72D8034 /* Pods-Luggage Express.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Luggage Express.debug.xcconfig"; path = "Target Support Files/Pods-Luggage Express/Pods-Luggage Express.debug.xcconfig"; sourceTree = "<group>"; };
-		58242B692B7AA337008DBFC5 /* Tajawal-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Tajawal-Regular.ttf"; sourceTree = SOURCE_ROOT; };
 		58242B6B2B7AA347008DBFC5 /* questions_answers.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = questions_answers.json; sourceTree = SOURCE_ROOT; };
-		58FF69852B78D8770015852D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../GoogleService-Info.plist"; sourceTree = "<group>"; };
 		A0C94695F71708610EA4A18F /* Pods-Luggage Express.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Luggage Express.release.xcconfig"; path = "Target Support Files/Pods-Luggage Express/Pods-Luggage Express.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -189,14 +189,6 @@
 			path = Storyboard;
 			sourceTree = "<group>";
 		};
-		3017EBFE2B75854D00B32B0F /* Fonts */ = {
-			isa = PBXGroup;
-			children = (
-				58242B692B7AA337008DBFC5 /* Tajawal-Regular.ttf */,
-			);
-			path = Fonts;
-			sourceTree = "<group>";
-		};
 		306022CD2B6C326900DED8B3 /* CollectionViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -229,7 +221,7 @@
 			children = (
 				58242B6B2B7AA347008DBFC5 /* questions_answers.json */,
 				309EE6AC2B77970F00652DDD /* PaddingLabel.swift */,
-				3017EBFE2B75854D00B32B0F /* Fonts */,
+				309EE6B52B7AB02D00652DDD /* Fonts */,
 				3017EBF72B751F2200B32B0F /* Storyboard */,
 				306022CD2B6C326900DED8B3 /* CollectionViewController */,
 				308B4CF32B62B741005E194E /* Controller */,
@@ -240,7 +232,7 @@
 				308B4CE72B62B5B8005E194E /* Assets.xcassets */,
 				308B4CE92B62B5B8005E194E /* LaunchScreen.storyboard */,
 				308B4CEC2B62B5B8005E194E /* Info.plist */,
-				58FF69852B78D8770015852D /* GoogleService-Info.plist */,
+				309EE6B12B7AAFFF00652DDD /* GoogleService-Info.plist */,
 			);
 			path = "Luggage Express";
 			sourceTree = "<group>";
@@ -275,6 +267,15 @@
 				309EE6AF2B77DB3500652DDD /* OrderManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		309EE6B52B7AB02D00652DDD /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				309EE6B62B7AB03600652DDD /* Tajawal-Regular.ttf */,
+			);
+			name = Fonts;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		9B46CF6D450CFAD42CE556B1 /* Frameworks */ = {
@@ -368,10 +369,10 @@
 				3017EBF12B75177B00B32B0F /* Third.storyboard in Resources */,
 				308B4CE82B62B5B8005E194E /* Assets.xcassets in Resources */,
 				308B4CE62B62B5B8005E194E /* Main.storyboard in Resources */,
-				58242B6A2B7AA337008DBFC5 /* Tajawal-Regular.ttf in Resources */,
 				58242B6C2B7AA347008DBFC5 /* questions_answers.json in Resources */,
 				3017EBED2B75174C00B32B0F /* Fourth.storyboard in Resources */,
-				58FF69862B78D8770015852D /* GoogleService-Info.plist in Resources */,
+				309EE6B72B7AB03600652DDD /* Tajawal-Regular.ttf in Resources */,
+				309EE6B22B7AAFFF00652DDD /* GoogleService-Info.plist in Resources */,
 				3017EBEB2B7516DA00B32B0F /* First.storyboard in Resources */,
 				3017EBEF2B75177500B32B0F /* Second.storyboard in Resources */,
 			);
