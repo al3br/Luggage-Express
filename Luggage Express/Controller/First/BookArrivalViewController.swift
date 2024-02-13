@@ -1,4 +1,5 @@
 import UIKit
+import SOTabBar
 import DropDown
 import Firebase
 
@@ -237,12 +238,23 @@ class BookArrivalViewController: UIViewController, UITextFieldDelegate {
             // Update the local array with the new serial numbers
             self.serialNumbers = updatedSerialNumbers
             self.serialNumberDropDown.dataSource = self.serialNumbers
+            if updatedSerialNumbers.isEmpty {
+                self.showAlertAndNavigateBack()
+            }
         }
 
     }
 
-
-
+    func showAlertAndNavigateBack() {
+        let alert = UIAlertController(title: "Serial Number Not Found!", message: "Please add serial number first by navigating to Barcode Reader Page or Profile then Serial Number.", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Back", style: .default) { _ in
+            // Dismiss the alert and navigate back to the previous screen
+            self.navigationController?.popViewController(animated: true)
+        }
+        alert.addAction(okAction)
+        present(alert, animated: true, completion: nil)
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)
         return false
