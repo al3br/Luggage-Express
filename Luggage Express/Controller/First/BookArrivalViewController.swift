@@ -7,24 +7,27 @@ class BookArrivalViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var checkOutButton: UIButton!
     @IBOutlet weak var datePicker: UIDatePicker!
     
+    @IBOutlet weak var serialNumberDropDownView: UIView!
     @IBOutlet weak var departureDropDownView: UIView!
     @IBOutlet weak var arrivalDropDownView: UIView!
     
-    @IBOutlet weak var serialNumberTextField: UITextField!
+    @IBOutlet weak var lblSerialNumber: UILabel!
     @IBOutlet weak var departureTextField: UITextField!
     @IBOutlet weak var arrivalTextField: UITextField!
     
+    let serialNumberDropDown = DropDown()
     let departureDropDown = DropDown()
     let arrivalDropDown = DropDown()
     
     var airports: [String] = []
+    
+    var serialNumbers: [String] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         changePlaceHolderColor(stringText: "Departure (City-Airport-Country)", placeholder: departureTextField)
         changePlaceHolderColor(stringText: "Arrival (City-Airport-Country)", placeholder: arrivalTextField)
-        changePlaceHolderColor(stringText: "Serial Number", placeholder: serialNumberTextField)
 
         datePicker.minimumDate = Date()
 
@@ -32,14 +35,35 @@ class BookArrivalViewController: UIViewController, UITextFieldDelegate {
         arrivalTextField.delegate = self
         
         fetchAirportsData()
+        fetchSerialNumbers()
         
         configureDropDown(dropDown: departureDropDown, anchorView: departureDropDownView, textField: departureTextField)
         configureDropDown(dropDown: arrivalDropDown, anchorView: arrivalDropDownView, textField: arrivalTextField)
+        configureSerialNumberDropDown()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
 
         
+    }
+    
+    @IBAction func onClickSelectSerialNumber(_ sender: Any) {
+        print("Clicked")
+        serialNumberDropDown.show()
+    }
+    
+    func configureSerialNumberDropDown() {
+        serialNumberDropDown.anchorView = serialNumberDropDownView
+        serialNumberDropDown.dataSource = serialNumbers
+        serialNumberDropDown.bottomOffset = CGPoint(x: 0, y: serialNumberDropDownView.bounds.height)
+        serialNumberDropDown.topOffset = CGPoint(x: 0, y: -serialNumberDropDownView.bounds.height)
+        serialNumberDropDown.direction = .bottom
+
+        serialNumberDropDown.selectionAction = { [weak self] (index: Int, item: String) in
+            guard let self = self else { return }
+            self.lblSerialNumber.text = item
+            self.lblSerialNumber.textColor = .black
+        }
     }
     
     @IBAction func onClickBack(_ sender: Any) {
@@ -103,7 +127,7 @@ class BookArrivalViewController: UIViewController, UITextFieldDelegate {
                         "firstName": firstName,
                         "lastName": lastName,
                         "phoneNumber": phoneNumber,
-                        "serialNumber": self.serialNumberTextField.text ?? "",
+                        "serialNumber": self.lblSerialNumber.text ?? "",
                         "departure": self.departureTextField.text ?? "",
                         "arrival": self.arrivalTextField.text ?? "",
                         "status": "pending",
@@ -127,7 +151,7 @@ class BookArrivalViewController: UIViewController, UITextFieldDelegate {
         dropDown.topOffset = CGPoint(x: 0, y: anchorView.plainView.bounds.height)
         dropDown.direction = .bottom
         
-        dropDown.selectionAction = { [weak self] (index: Int, item: String) in
+        dropDown.selectionAction = { (index: Int, item: String) in
             let filteredAirports = dropDown.dataSource
             textField.text = filteredAirports[index]
             textField.textColor = .black
@@ -161,6 +185,63 @@ class BookArrivalViewController: UIViewController, UITextFieldDelegate {
             }
         }.resume()
     }
+    
+    func fetchSerialNumbers() {
+        print("Fetching serial numbers...")
+        
+        guard let currentUserID = Auth.auth().currentUser?.uid else {
+            print("Error: Current user ID is nil.")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(currentUserID)
+        
+        userRef.collection("serialNumbers").getDocuments { [weak self] (querySnapshot, error) in
+            guard let self = self else { return }
+
+            if let error = error {
+                print("Error fetching serial numbers: \(error)")
+                return
+            }
+
+            guard let querySnapshot = querySnapshot else {
+                print("Error: Query snapshot is nil.")
+                return
+            }
+
+            print("Number of documents: \(querySnapshot.documents.count)")
+
+            var updatedSerialNumbers: [String] = []
+
+            for document in querySnapshot.documents {
+                print("Document ID: \(document.documentID)")
+                print("Document data: \(document.data())")
+
+                if let number = document.data()["number"] {
+                    if let numberString = number as? String {
+                        updatedSerialNumbers.append(numberString)
+                    } else if let numberInt = number as? Int {
+                        let numberString = String(numberInt)
+                        updatedSerialNumbers.append(numberString)
+                    } else {
+                        print("Error: Unable to convert number to String.")
+                    }
+                } else {
+                    print("Error: 'number' field not found in document.")
+                }
+            }
+
+            print("Fetched serial numbers: \(updatedSerialNumbers)")
+
+            // Update the local array with the new serial numbers
+            self.serialNumbers = updatedSerialNumbers
+            self.serialNumberDropDown.dataSource = self.serialNumbers
+        }
+
+    }
+
+
 
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         self.view.endEditing(true)

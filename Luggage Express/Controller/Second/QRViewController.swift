@@ -27,7 +27,7 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
     func startCameraSession() {
             activityIndicator.startAnimating()
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else {
                     print("Your device is not applicable for video processing")
                     self.showAlertAndNavigateBack(title: "Device Not Supported", message: "Your device is not applicable for video processing", action: "OK")
@@ -56,10 +56,18 @@ class QRViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate
                         return
                     }
                     
+                    // Add UIImageView for camera_corners
+                    let imageView = UIImageView(image: UIImage(named: "camera_corners"))
+                    imageView.contentMode = .center
+                    imageView.frame = CGRect(x: (self.view.bounds.width - 100) / 2, y: (self.view.bounds.height - 100) / 2, width: 200, height: 200) // Adjust size and position as needed
+                    self.view.addSubview(imageView)
+                    
                     self.previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
                     self.previewLayer.frame = self.view.layer.bounds
                     self.previewLayer.videoGravity = .resizeAspectFill
                     self.view.layer.addSublayer(self.previewLayer)
+                    
+                    
                     
                     print("Running")
                     self.captureSession.startRunning()

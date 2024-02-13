@@ -605,7 +605,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = A856QCC587;
+				DEVELOPMENT_TEAM = FVZZRTGGT2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Luggage Express/Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app would like to use your camera to scan qr codes.";
@@ -639,7 +639,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = A856QCC587;
+				DEVELOPMENT_TEAM = FVZZRTGGT2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "Luggage Express/Info.plist";
 				INFOPLIST_KEY_NSCameraUsageDescription = "This app would like to use your camera to scan qr codes.";

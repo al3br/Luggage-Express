@@ -18,11 +18,13 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
     @IBOutlet weak var buttonOutSide: UIButton!
     @IBOutlet weak var buttonInSide: UIButton!
     
+    let serialNumberDropDown = DropDown()
     let myDropDown = DropDown()
 
     var outsideChecked = false
 
     let luggagesArray = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+    var serialNumbers: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,18 +36,8 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
         lblComment.textColor = UIColor.lightGray
         lblComment.backgroundColor = UIColor.white
         
-        myDropDown.anchorView = myDropDownView
-        myDropDown.dataSource = luggagesArray
-        
-        myDropDown.bottomOffset = CGPoint(x: 0, y: (myDropDown.anchorView?.plainView.bounds.height)!)
-        myDropDown.topOffset = CGPoint(x: 0, y: (myDropDown.anchorView?.plainView.bounds.height)!)
-        
-        myDropDown.direction = .bottom
-        
-        myDropDown.selectionAction = { (index: Int, item: String) in
-            self.selectLuggage.text = self.luggagesArray[index]
-            self.selectLuggage.textColor = .black
-        }
+        fetchSerialNumbers()
+        configureDropDown()
         
         if outsideChecked == false {
             buttonOutSide.setTitleColor(UIColor(named: "Main-text"), for: .normal)
@@ -62,6 +54,77 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
         // Add tap gesture recognizer to dismiss keyboard
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
+
+    }
+    
+    func configureDropDown(){
+        myDropDown.anchorView = myDropDownView
+        myDropDown.dataSource = luggagesArray
+        
+        
+        myDropDown.bottomOffset = CGPoint(x: 0, y: (myDropDown.anchorView?.plainView.bounds.height)!)
+        myDropDown.topOffset = CGPoint(x: 0, y: (myDropDown.anchorView?.plainView.bounds.height)!)
+        
+        myDropDown.direction = .bottom
+        
+        myDropDown.selectionAction = { (index: Int, item: String) in
+            self.selectLuggage.text = self.luggagesArray[index]
+            self.selectLuggage.textColor = .black
+        }
+    }
+    
+    func fetchSerialNumbers() {
+        print("Fetching serial numbers...")
+        
+        guard let currentUserID = Auth.auth().currentUser?.uid else {
+            print("Error: Current user ID is nil.")
+            return
+        }
+        
+        let db = Firestore.firestore()
+        let userRef = db.collection("users").document(currentUserID)
+        
+        userRef.collection("serialNumbers").getDocuments { [weak self] (querySnapshot, error) in
+            guard let self = self else { return }
+
+            if let error = error {
+                print("Error fetching serial numbers: \(error)")
+                return
+            }
+
+            guard let querySnapshot = querySnapshot else {
+                print("Error: Query snapshot is nil.")
+                return
+            }
+
+            print("Number of documents: \(querySnapshot.documents.count)")
+
+            var updatedSerialNumbers: [String] = []
+
+            for document in querySnapshot.documents {
+                print("Document ID: \(document.documentID)")
+                print("Document data: \(document.data())")
+
+                if let number = document.data()["number"] {
+                    if let numberString = number as? String {
+                        updatedSerialNumbers.append(numberString)
+                    } else if let numberInt = number as? Int {
+                        let numberString = String(numberInt)
+                        updatedSerialNumbers.append(numberString)
+                    } else {
+                        print("Error: Unable to convert number to String.")
+                    }
+                } else {
+                    print("Error: 'number' field not found in document.")
+                }
+            }
+
+            print("Fetched serial numbers: \(updatedSerialNumbers)")
+
+            // Update the local array with the new serial numbers
+            self.serialNumbers = updatedSerialNumbers
+            self.serialNumberDropDown.dataSource = self.serialNumbers
+        }
 
     }
     
@@ -181,8 +244,7 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
             }
         }
     }
-    
-    
+        
     @IBAction func onClickCheckOut(_ sender: Any) {
         
         // Scale animation for the button

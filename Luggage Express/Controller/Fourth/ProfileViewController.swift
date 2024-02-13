@@ -17,12 +17,27 @@ class ProfileViewController: UIViewController {
     @IBOutlet weak var lblPhoneNumber: UILabel!
     @IBOutlet weak var lblName: UILabel!
     
+    var activityIndicator: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         
+        setupActivityIndicator()
+        
         loadUserData()
         
+    }
+    
+    func setupActivityIndicator() {
+        // Create the activity indicator
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+
+        // Make sure the indicator is on top of the background view
+        view.bringSubviewToFront(activityIndicator)
     }
     
     
@@ -149,6 +164,7 @@ class ProfileViewController: UIViewController {
     }
     
     func loadUserData() {
+            activityIndicator.startAnimating()
             // Get the current user
             guard let currentUser = Auth.auth().currentUser else {
                 // User is not logged in
@@ -168,9 +184,11 @@ class ProfileViewController: UIViewController {
                     let userData = document.data()
                     self.lblName.text = userData?["firstName"] as? String ?? ""
                     self.lblPhoneNumber.text = userData?["phoneNumber"] as? String ?? ""
+                    self.activityIndicator.stopAnimating()
                 } else {
                     // Document does not exist or error occurred
                     print("Error fetching user document: \(error?.localizedDescription ?? "Unknown error")")
+                    self.activityIndicator.stopAnimating()
                 }
             }
             

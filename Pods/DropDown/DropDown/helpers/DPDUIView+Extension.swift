@@ -36,22 +36,26 @@ internal extension UIView {
 }
 
 internal extension UIWindow {
-	
-	static func visibleWindow() -> UIWindow? {
-		var currentWindow = UIApplication.shared.keyWindow
-		
-		if currentWindow == nil {
-			let frontToBackWindows = Array(UIApplication.shared.windows.reversed()) 
-			
-			for window in frontToBackWindows {
-				if window.windowLevel == UIWindow.Level.normal {
-					currentWindow = window
-					break
-				}
-			}
-		}
-		
-		return currentWindow
-	}
-	
+    
+    static func visibleWindow() -> UIWindow? {
+        var currentWindow: UIWindow?
+        
+        // Use the scene's windows if available
+        if let windowScene = UIApplication.shared.connectedScenes
+            .filter({ $0.activationState == .foregroundActive })
+            .compactMap({ $0 as? UIWindowScene })
+            .first {
+            
+            currentWindow = windowScene.windows.first { $0.isKeyWindow }
+        }
+        
+        // If no key window is found in the active scene, fallback to searching through all windows
+        if currentWindow == nil {
+            let frontToBackWindows = Array(UIApplication.shared.windows.reversed())
+            currentWindow = frontToBackWindows.first { $0.windowLevel == UIWindow.Level.normal }
+        }
+        
+        return currentWindow
+    }
+    
 }
