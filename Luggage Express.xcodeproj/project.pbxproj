@@ -42,6 +42,8 @@
 		308C5CC82B64F8850013579C /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308C5CC72B64F8850013579C /* LoginViewController.swift */; };
 		308C5CCA2B6585840013579C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308C5CC92B6585840013579C /* ProfileViewController.swift */; };
 		308C5CCC2B6645550013579C /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 308C5CCB2B6645550013579C /* EditProfileViewController.swift */; };
+		309E4E142B7F85AC009684B0 /* InsideAirportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309E4E132B7F85AC009684B0 /* InsideAirportViewController.swift */; };
+		309E4E162B800DBC009684B0 /* UpdateTimeLineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309E4E152B800DBC009684B0 /* UpdateTimeLineView.swift */; };
 		309EE6AD2B77970F00652DDD /* PaddingLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EE6AC2B77970F00652DDD /* PaddingLabel.swift */; };
 		309EE6B02B77DB3500652DDD /* OrderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EE6AF2B77DB3500652DDD /* OrderManager.swift */; };
 		309EE6B22B7AAFFF00652DDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 309EE6B12B7AAFFF00652DDD /* GoogleService-Info.plist */; };
@@ -92,6 +94,8 @@
 		308C5CC72B64F8850013579C /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		308C5CC92B6585840013579C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		308C5CCB2B6645550013579C /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
+		309E4E132B7F85AC009684B0 /* InsideAirportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsideAirportViewController.swift; sourceTree = "<group>"; };
+		309E4E152B800DBC009684B0 /* UpdateTimeLineView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTimeLineView.swift; sourceTree = "<group>"; };
 		309EE6AC2B77970F00652DDD /* PaddingLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingLabel.swift; sourceTree = "<group>"; };
 		309EE6AF2B77DB3500652DDD /* OrderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderManager.swift; sourceTree = "<group>"; };
 		309EE6B12B7AAFFF00652DDD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -148,6 +152,7 @@
 				3017EBFA2B75322C00B32B0F /* LostReportViewController.swift */,
 				30714FD32B73F30C00912598 /* LocationInfoViewController.swift */,
 				30606E392B6AF0780021D00B /* CheckOutViewController.swift */,
+				309E4E132B7F85AC009684B0 /* InsideAirportViewController.swift */,
 				3017EBFC2B75479600B32B0F /* SuccessCheckOutViewController.swift */,
 			);
 			path = First;
@@ -174,10 +179,11 @@
 			children = (
 				308C5CC92B6585840013579C /* ProfileViewController.swift */,
 				308C5CCB2B6645550013579C /* EditProfileViewController.swift */,
+				30AB0F582B7E7EFF00341B59 /* MyOrderViewController.swift */,
 				306022CB2B6C278400DED8B3 /* OrdersHistoryViewController.swift */,
 				3017EBE62B74F5FA00B32B0F /* SerialNumberViewController.swift */,
 				30606E312B697A630021D00B /* AboutViewController.swift */,
-				30AB0F582B7E7EFF00341B59 /* MyOrderViewController.swift */,
+				309E4E152B800DBC009684B0 /* UpdateTimeLineView.swift */,
 			);
 			path = Fourth;
 			sourceTree = "<group>";
@@ -433,6 +439,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				309E4E162B800DBC009684B0 /* UpdateTimeLineView.swift in Sources */,
 				30B88B412B63D5F3002D24EE /* FastArrivalViewController.swift in Sources */,
 				3017EBFB2B75322C00B32B0F /* LostReportViewController.swift in Sources */,
 				30B88B3D2B63C18B002D24EE /* ServiceCollectionViewCell.swift in Sources */,
@@ -457,6 +464,7 @@
 				30B88B3B2B63A115002D24EE /* ServicesViewController.swift in Sources */,
 				30CC348A2B67FDF9004DE59C /* Service.swift in Sources */,
 				30CC348C2B68117B004DE59C /* BookArrivalViewController.swift in Sources */,
+				309E4E142B7F85AC009684B0 /* InsideAirportViewController.swift in Sources */,
 				308C5CCC2B6645550013579C /* EditProfileViewController.swift in Sources */,
 				306022CF2B6FC11900DED8B3 /* OrderHistory.swift in Sources */,
 				30606E302B6968450021D00B /* MapViewController.swift in Sources */,

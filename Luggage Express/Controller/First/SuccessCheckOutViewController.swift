@@ -5,8 +5,13 @@ class SuccessCheckOutViewController: UIViewController {
 
     @IBOutlet weak var homeButton: UIButton!
     
+    @IBOutlet weak var lblOrderNumber: UILabel!
+    var orderNumber: Int = 10000000
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        lblOrderNumber.text = "#\(orderNumber)"
         
         let homeIcon = UIImage(systemName: "house")
         homeButton.setImage(homeIcon, for: .normal)

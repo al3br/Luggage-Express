@@ -1,5 +1,7 @@
 import UIKit
 import Firebase
+import CoreImage
+import FirebaseStorage
 
 class CheckOutViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
@@ -10,6 +12,8 @@ class CheckOutViewController: UIViewController, UICollectionViewDelegate, UIColl
     var total: Double = 0.0
     var Longitude: Double = 0.0
     var Latitude: Double = 0.0
+    var airportName: String = ""
+    var locationDescription: String = ""
 
     @IBOutlet weak var payButton: UIButton!
     @IBOutlet weak var lblTotal: UILabel!
@@ -45,6 +49,8 @@ class CheckOutViewController: UIViewController, UICollectionViewDelegate, UIColl
             arrayOrder.append(CheckOutOrder(type: "Fast Arrival", price: "20 AED"))
             if outsideChecked == true {
                 arrayOrder.append(CheckOutOrder(type: "Outside the Airport Service", price: "30 AED"))
+            } else {
+                arrayOrder.append(CheckOutOrder(type: "Inside the Airport Service", price: "0 AED"))
             }
         } else {
             
@@ -80,61 +86,181 @@ class CheckOutViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
 
     }
-    
-    func storeDataToDatabase() {
-        guard let currentUser = Auth.auth().currentUser else {
-                // Handle when the user is not logged in
+
+    func generateOrderID() {
+        let db = Firestore.firestore()
+        let ordersRef = db.collection("orders")
+
+        // Query to get the last order ID
+        ordersRef.order(by: "order_id", descending: true).limit(to: 1).getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error getting documents: \(error.localizedDescription)")
                 return
             }
 
-            // Assuming you have a Firestore database reference
-            let db = Firestore.firestore()
+            var lastOrderID = 1000000 // Default starting order ID if no orders exist yet
 
+            if let snapshot = snapshot {
+                for document in snapshot.documents {
+                    if let orderID = document.data()["order_id"] as? Int {
+                        lastOrderID = orderID + 1
+                        break
+                    }
+                }
+            }
+
+            // Now you have the last order ID, you can use it to create a new order
+            let newOrderID = lastOrderID
+            let newOrderRef = ordersRef.document()
+
+            newOrderRef.setData(["order_id": newOrderID]) { error in
+                if let error = error {
+                    print("Error adding document: \(error.localizedDescription)")
+                } else {
+                    print("Order document added with ID: \(newOrderRef.documentID), Order ID: \(newOrderID)")
+                }
+            }
+        }
+    }
+
+    func generateAndStoreQRCode(orderNumber: Int) {
+        // Generate the QR code image
+        guard let qrCodeString = "\(orderNumber)".data(using: String.Encoding.ascii),
+              let qrFilter = CIFilter(name: "CIQRCodeGenerator") else {
+            print("Failed to generate QR code data.")
+            return
+        }
+        
+        qrFilter.setValue(qrCodeString, forKey: "inputMessage")
+        guard let qrImage = qrFilter.outputImage else {
+            print("Failed to generate QR code image.")
+            return
+        }
+        
+        guard let qrCodeImage = UIImage(ciImage: qrImage).qrCodeImage() else {
+            print("Failed to create QR code UIImage.")
+            return
+        }
+
+        // Upload the QR code image to Firebase Storage
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        let qrCodeRef = storageRef.child("qr_codes/\(orderNumber).png")
+        
+        guard let imageData = qrCodeImage.pngData() else {
+            print("Failed to convert QR code image to data.")
+            return
+        }
+        
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/png"
+        
+        qrCodeRef.putData(imageData, metadata: metadata) { metadata, error in
+            if let error = error {
+                print("Error uploading QR code image: \(error)")
+            } else {
+                print("QR code image uploaded successfully.")
+                // You can handle success here, such as displaying a success message to the user.
+            }
+        }
+    }
+
+    
+    func storeDataToDatabase() {
+        guard let currentUser = Auth.auth().currentUser else {
+            // Handle when the user is not logged in
+            return
+        }
+        
+        // Assuming you have a Firestore database reference
+        let db = Firestore.firestore()
+        
+        let ordersRef = db.collection("orders")
+
+        // Query to get the last order ID
+        ordersRef.order(by: "order_id", descending: true).limit(to: 1).getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error getting documents: \(error.localizedDescription)")
+                return
+            }
+            
+            var lastOrderID = 1000000 // Default starting order ID if no orders exist yet
+            
+            if let snapshot = snapshot {
+                for document in snapshot.documents {
+                    if let orderID = document.data()["order_id"] as? Int {
+                        lastOrderID = orderID + 1
+                        
+                        break
+                    }
+                }
+            }
+            
+            // Now you have the last order ID, you can use it to create a new order
+            let newOrderID = lastOrderID
+            
+            // Convert your date string to a Timestamp object
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+            let date = dateFormatter.date(from: Date().description)
+
+            // Create a Timestamp object
+            let timestamp = Timestamp(date: date!)
+            
             // Retrieve user details from the 'users' collection
             db.collection("users").document(currentUser.uid).getDocument { (userDocument, error) in
                 if let error = error {
                     print("Error getting user document: \(error)")
                     return
                 }
-
+                
                 if let userData = userDocument?.data(),
                    let email = userData["email"] as? String,
                    let firstName = userData["firstName"] as? String,
                    let lastName = userData["lastName"] as? String,
                    let phoneNumber = userData["phoneNumber"] as? String {
                     
-                    // Assuming you have a 'data' collection in Firestore
-                    let dataRef = db.collection("orders").document()
-
-                    // Store the provided fields along with user details into the database
-                    dataRef.setData([
+                    // Create a new order document
+                    let orderData: [String: Any] = [
                         "user_id": currentUser.uid,
                         "email": email,
                         "firstName": firstName,
                         "lastName": lastName,
                         "phoneNumber": phoneNumber,
                         "status": "pending",
-                        "date": Date().description,
+                        "date": timestamp,
                         "fastArrival": self.fastArrival.description,
                         "outsideChecked": self.outsideChecked.description,
                         "selectedLuggage": self.selectedLuggage,
                         "comment": self.comment.description,
                         "total": self.total,
                         "longitude": self.Longitude,
-                        "latitude": self.Latitude
-                    ]) { error in
+                        "latitude": self.Latitude,
+                        "order_id": newOrderID
+                    ]
+                    
+                    // Save the data to Firestore
+                    ordersRef.addDocument(data: orderData) { error in
                         if let error = error {
                             print("Error writing document: \(error)")
                         } else {
                             print("Document successfully written!")
-                            self.navigateToView(identifier: "success_ID")
+                            self.generateAndStoreQRCode(orderNumber: newOrderID)
+                            guard let vcSuccess = self.storyboard?.instantiateViewController(withIdentifier: "success_ID") as? SuccessCheckOutViewController else {
+                                return
+                            }
+                            // Pass data to CheckOutViewController
+                            vcSuccess.orderNumber = newOrderID
+                            self.navigationController?.pushViewController(vcSuccess, animated: true)
                         }
                     }
                 } else {
                     print("User data not found or invalid format")
                 }
             }
+        }
     }
+
     
     @IBAction func onClickBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
@@ -152,4 +278,13 @@ class CheckOutCell: UICollectionViewCell {
         lblPrice.text = price
     }
     
+}
+
+extension UIImage {
+    func qrCodeImage() -> UIImage? {
+        guard let ciImage = CIImage(image: self) else { return nil }
+        let transform = CGAffineTransform(scaleX: 10, y: 10)
+        let scaledCIImage = ciImage.transformed(by: transform)
+        return UIImage(ciImage: scaledCIImage)
+    }
 }

@@ -11,6 +11,9 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
     @IBOutlet weak var selectLuggage: UILabel!
     @IBOutlet weak var myDropDownView: UIView!
     
+    
+    @IBOutlet weak var serialNumberDropDownView: UIView!
+    @IBOutlet weak var lblSerialNumber: UILabel!
     @IBOutlet weak var lblComment: UITextView!
     
     @IBOutlet weak var lblTotal: UILabel!
@@ -38,26 +41,111 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
         
         fetchSerialNumbers()
         configureDropDown()
+        setup()
         
         if outsideChecked == false {
             buttonOutSide.setTitleColor(UIColor(named: "Main-text"), for: .normal)
             buttonOutSide.setTitle("+", for: .normal)
             buttonInSide.setTitleColor(.red, for: .normal)
             buttonInSide.setTitle("x", for: .normal)
-            checkOutButton.setTitle("Check Out", for: .normal)
-        } else {
-            checkOutButton.setTitle("Next", for: .normal)
         }
-        
-        //showAlertAndNavigateBack()
         
         // Add tap gesture recognizer to dismiss keyboard
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
 
     }
+    private func setup() {
+        setupDismissKeyboardGesture()
+        setupKeyboardHiding()
+    }
+    
+    private func setupKeyboardHiding() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(sender: NSNotification) {
+        guard let userInfo = sender.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+              let currentInput = findFirstResponder() else {
+            return
+        }
+        
+        let keyboardTopY = keyboardFrame.cgRectValue.origin.y
+        let convertedInputFrame = view.convert(currentInput.frame, from: currentInput.superview)
+        let inputBottomY = convertedInputFrame.origin.y + convertedInputFrame.size.height
+        
+        if inputBottomY > keyboardTopY {
+            let inputY = convertedInputFrame.origin.y
+            let newFrameY = (inputY - keyboardTopY / 2) * -1
+            view.frame.origin.y = newFrameY+80
+        }
+    }
+
+    func findFirstResponder() -> UIView? {
+        for view in view.subviews {
+            if view.isFirstResponder {
+                return view
+            }
+            if let responder = findFirstResponder(in: view) {
+                return responder
+            }
+        }
+        return nil
+    }
+
+    func findFirstResponder(in view: UIView) -> UIView? {
+        for subview in view.subviews {
+            if subview.isFirstResponder {
+                return subview
+            }
+            if let responder = findFirstResponder(in: subview) {
+                return responder
+            }
+        }
+        return nil
+    }
+
+
+    @objc func keyboardWillHide(notification: NSNotification)
+    {
+        view.frame.origin.y = 0
+    }
+    
+    private func setupDismissKeyboardGesture() {
+        let dismissKeyboardTap = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_: )))
+        view.addGestureRecognizer(dismissKeyboardTap)
+    }
+        
+    @objc func viewTapped(_ recognizer: UITapGestureRecognizer) {
+        if recognizer.state == UIGestureRecognizer.State.ended {
+            view.endEditing(true) // resign first responder
+        }
+    }
+
+    
+    func changePlaceHolderColor(stringText: String, placeholder: UITextField) {
+        let darkGrayPlaceholderText = NSAttributedString(string: stringText, attributes: [NSAttributedString.Key.foregroundColor: UIColor.darkGray])
+        placeholder.attributedPlaceholder = darkGrayPlaceholderText
+    }
+    
     
     func configureDropDown(){
+        serialNumberDropDown.anchorView = serialNumberDropDownView
+        serialNumberDropDown.dataSource = serialNumbers
+        
+        
+        serialNumberDropDown.bottomOffset = CGPoint(x: 0, y: (serialNumberDropDown.anchorView?.plainView.bounds.height)!)
+        serialNumberDropDown.topOffset = CGPoint(x: 0, y: (serialNumberDropDown.anchorView?.plainView.bounds.height)!)
+        
+        serialNumberDropDown.direction = .bottom
+        
+        serialNumberDropDown.selectionAction = { (index: Int, item: String) in
+            self.lblSerialNumber.text = self.serialNumbers[index]
+            self.lblSerialNumber.textColor = .black
+        }
+        
         myDropDown.anchorView = myDropDownView
         myDropDown.dataSource = luggagesArray
         
@@ -150,10 +238,6 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
         self.navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func onBack(_ sender: Any) {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
     func showAlertAndNavigateBack() {
         let alert = UIAlertController(title: "Serial Number Not Found!", message: "You have to add serial number first!", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Scan a Serial Number", style: .default) { _ in
@@ -195,55 +279,7 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
         navigationController?.pushViewController(destinationViewController, animated: true)
     }
 
-    func storeDataToDatabase() {
-        guard let currentUser = Auth.auth().currentUser else {
-            // Handle when the user is not logged in
-            return
-        }
-
-        // Assuming you have a Firestore database reference
-        let db = Firestore.firestore()
-
-        // Retrieve user details from the 'users' collection
-        db.collection("users").document(currentUser.uid).getDocument { (userDocument, error) in
-            if let error = error {
-                print("Error getting user document: \(error)")
-                return
-            }
-
-            if let userData = userDocument?.data(),
-               let email = userData["email"] as? String,
-               let firstName = userData["firstName"] as? String,
-               let lastName = userData["lastName"] as? String,
-               let phoneNumber = userData["phoneNumber"] as? String {
-
-                
-                let dataRef = db.collection("orders").document()
-
-                // Store the values into the database along with user information
-                dataRef.setData([
-                    "userId": currentUser.uid,
-                    "email": email,
-                    "firstName": firstName,
-                    "lastName": lastName,
-                    "phoneNumber": phoneNumber,
-                    "outsideChecked": self.outsideChecked,
-                    "selectLuggage": self.selectLuggage.text ?? "",
-                    "comment": self.lblComment.text ?? "",
-                    "total": self.lblTotal.text ?? ""
-                ]) { error in
-                    if let error = error {
-                        print("Error writing document: \(error)")
-                    } else {
-                        print("Document successfully written!")
-                        self.navigateToView(identifier: "success_ID")
-                    }
-                }
-            } else {
-                print("User data not found or invalid format")
-            }
-        }
-    }
+    
         
     @IBAction func onClickCheckOut(_ sender: Any) {
         
@@ -255,7 +291,9 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
                     self.checkOutButton.transform = CGAffineTransform.identity
                 }
             })
-
+        if fieldsAreEmpty() {
+            displayAlert(message: "Please select how many luggages.")
+        } else {
             if outsideChecked {
                 // Instantiate LocationInfoViewController from storyboard
                 guard let vcLocation = storyboard?.instantiateViewController(withIdentifier: "location_ID") as? LocationInfoViewController else {
@@ -273,9 +311,36 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
                 // Push LocationInfoViewController onto the navigation stack
                 navigationController?.pushViewController(vcLocation, animated: true)
             } else {
-                storeDataToDatabase()
+                // Instantiate LocationInfoViewController from storyboard
+                guard let vcLocation = storyboard?.instantiateViewController(withIdentifier: "insideairport_ID") as? InsideAirportViewController else {
+                    return
+                }
+
+                // Pass data to LocationInfoViewController
+                vcLocation.outsideChecked = outsideChecked
+                vcLocation.selectedLuggage = selectLuggage.text ?? ""
+                vcLocation.comment = lblComment.text
+                if let stringText = lblTotal.text, let totalValue = Double(stringText) {
+                    vcLocation.total = totalValue
+                }
+
+                // Push LocationInfoViewController onto the navigation stack
+                navigationController?.pushViewController(vcLocation, animated: true)
             }
-        
+        }
+    }
+    
+    func displayAlert(message: String) {
+        let alert = UIAlertController(title: "Alert", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func fieldsAreEmpty() -> Bool {
+        if selectLuggage.text == "Select Luggage" || selectLuggage.text!.isEmpty {
+            return true
+        }
+        return false
     }
     
     override func didReceiveMemoryWarning() {
@@ -288,10 +353,14 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
     }
     
     @IBAction func onClickDropDown(_ sender: Any) {
-        print("Button Clicked")
         myDropDown.show()
         
     }
+    
+    @IBAction func onClickSelectSerial(_ sender: Any) {
+        serialNumberDropDown.show()
+    }
+    
     
     @IBAction func onClickOutside(_ sender: Any) {
         if outsideChecked {
@@ -303,7 +372,6 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
                 buttonOutSide.setTitle("+", for: .normal)
                 buttonInSide.setTitleColor(.red, for: .normal)
                 buttonInSide.setTitle("x", for: .normal)
-                checkOutButton.setTitle("Check Out", for: .normal)
             }
         } else {
             outsideChecked = true
@@ -314,7 +382,6 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
                 buttonOutSide.setTitle("x", for: .normal)
                 buttonInSide.setTitleColor(UIColor(named: "Main-text"), for: .normal)
                 buttonInSide.setTitle("+", for: .normal)
-                checkOutButton.setTitle("Next", for: .normal)
             }
         }
     }
@@ -334,6 +401,8 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
             
         }
     }
+    
+    
     
 }
 	

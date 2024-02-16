@@ -1,75 +1,37 @@
 import UIKit
 import Firebase
 
-class OrdersHistoryViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class OrdersHistoryViewController: UIViewController {
     
-    @IBOutlet weak var collectionView: UICollectionView!
+    var arrayUpdates = [String]()
     
     var arrayOrderHistory = [OrderHistory]()
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return arrayOrderHistory.count
-    }
+    var orderNumber: String = ""
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let reversedIndex = arrayOrderHistory.count - indexPath.row - 1
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "orderCell", for: indexPath) as! OrderCell
-            let order = arrayOrderHistory[reversedIndex]
-            cell.setupCell(date: order.date, time: order.time, description: order.description)
-            return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // Retrieve the selected service
-        let selectedOrder = arrayOrderHistory[indexPath.row]
-        
-        // Perform actions based on the selected service
-        print("Selected order: \(selectedOrder.description)")
-        
-        
-    }
-
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.frame.width * 0.49, height: self.view.frame.width * 0.5)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
-    }
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0.1
-    }
-    
+    var timelineItems = [TimelineItemView]() // Array to hold timeline items
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        collectionView.delegate = self
-        collectionView.dataSource = self
-   
-        arrayOrderHistory.removeAll()
         arrayOrderHistory.reverse()
-     
+        
         // Call the function to fetch orders history
         fetchOrderHistory()
+        
     }
-
+    
     func fetchOrderHistory() {
-        
-        guard let currentUser = Auth.auth().currentUser else {
-            print("No signed-in user")
-            return
-        }
-            
-        let userEmail = currentUser.email ?? ""
+        print("Fetching order history...")
         let db = Firestore.firestore()
-
-        
-        // Assuming you have a collection named "Orders"
         let ordersCollection = db.collection("orders")
         
-        // Query orders where the user email field matches signed-in user email
-        ordersCollection.whereField("email", isEqualTo: userEmail).getDocuments { (querySnapshot, error) in
+        guard let orderIdNumber = Int(orderNumber) else {
+            print("Failed to convert orderNumber to a numeric type.")
+            return
+        }
+        
+        ordersCollection.whereField("order_id", isEqualTo: orderIdNumber).getDocuments { (querySnapshot, error) in
             if let error = error {
                 print("Error getting documents: \(error)")
             } else {
@@ -79,10 +41,8 @@ class OrdersHistoryViewController: UIViewController, UICollectionViewDelegate, U
                 }
                 
                 for document in documents {
-                    // Access the subcollection "trackingUpdates" for each document
                     let trackingUpdatesCollection = document.reference.collection("trackingUpdates")
                     
-                    // Fetch documents from the subcollection
                     trackingUpdatesCollection.getDocuments { (subCollectionSnapshot, subCollectionError) in
                         if let subCollectionError = subCollectionError {
                             print("Error getting subcollection documents: \(subCollectionError)")
@@ -93,34 +53,64 @@ class OrdersHistoryViewController: UIViewController, UICollectionViewDelegate, U
                                 return
                             }
                             
-                            // Parse and process the subcollection documents
                             for subDocument in subCollectionDocuments {
                                 let data = subDocument.data()
                                 if let date = data["date"] as? String,
                                    let time = data["time"] as? String,
                                    let description = data["description"] as? String {
-                                    let orderHistory = OrderHistory(date: date, time: time, description: description)
-                                    // Append the order history to your array
-                                    self.arrayOrderHistory.append(orderHistory)
+                                    let timelineItem = TimelineItemView()
+                                    timelineItem.configure(title: description, dateTime: "\(date) \(time)", hasData: true)
                                     
+                                    // Append the timeline item to the array
+                                    self.timelineItems.append(timelineItem)
+                                    self.timelineItems.reverse()
                                 }
                             }
                             
-                            // Here you can perform any UI updates or further processing
-                            // as needed after fetching the order history
-                            DispatchQueue.main.async {
-                                self.collectionView.reloadData()
+                            // Check if there are no subcollection documents
+                            if subCollectionDocuments.isEmpty {
+                                print("No subcollection documents")
+                                self.showAlertAndNavigateBack()
+                            } else {
+                                // Once all data is fetched and processed, update the UI
+                                DispatchQueue.main.async {
+                                    self.setupTimelineItems()
+                                }
                             }
-                            
                         }
                     }
                 }
             }
         }
     }
+
+    func setupTimelineItems() {
+        print("Setting up timeline items...")
+        // Assuming you have a reference to the superview
+        guard let superview = view else { return }
+        
+        // Add each TimelineItemView to the superview
+        for (index, timelineItem) in timelineItems.enumerated() {
+            superview.addSubview(timelineItem)
+            timelineItem.translatesAutoresizingMaskIntoConstraints = false
+            
+            // Set constraints based on the index
+            let topConstraint = CGFloat(120 + (80 * index))
+            
+            timelineItem.leadingAnchor.constraint(equalTo: superview.leadingAnchor, constant: 16).isActive = true
+            timelineItem.topAnchor.constraint(equalTo: superview.topAnchor, constant: topConstraint).isActive = true
+        }
+        
+        // Trigger a layout update to refresh the UI
+        superview.setNeedsLayout()
+        superview.layoutIfNeeded()
+        print("Timeline items setup completed.")
+    }
+
+
     
     func showAlertAndNavigateBack() {
-        let alert = UIAlertController(title: "Order Not Found!", message: "There is no order found by your email.", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Update Not Found!", message: "There is no update for your order.", preferredStyle: .alert)
         let okAction = UIAlertAction(title: "Go Back", style: .default) { _ in
             // Dismiss the alert and navigate back to the previous screen
             self.navigationController?.popViewController(animated: true)
