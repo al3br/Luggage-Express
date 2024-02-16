@@ -4,6 +4,10 @@ import SOTabBar
 
 class LoginViewController: UIViewController, UITextFieldDelegate {
     
+    
+    
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     @IBOutlet weak var loginButton: UIButton!
     
     @IBOutlet weak var lblMessage: UILabel!

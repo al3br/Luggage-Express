@@ -46,6 +46,8 @@
 		309EE6B02B77DB3500652DDD /* OrderManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 309EE6AF2B77DB3500652DDD /* OrderManager.swift */; };
 		309EE6B22B7AAFFF00652DDD /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 309EE6B12B7AAFFF00652DDD /* GoogleService-Info.plist */; };
 		309EE6B72B7AB03600652DDD /* Tajawal-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 309EE6B62B7AB03600652DDD /* Tajawal-Regular.ttf */; };
+		30AB0F572B7E7EB200341B59 /* MyOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB0F562B7E7EB200341B59 /* MyOrder.swift */; };
+		30AB0F592B7E7EFF00341B59 /* MyOrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30AB0F582B7E7EFF00341B59 /* MyOrderViewController.swift */; };
 		30B88B3B2B63A115002D24EE /* ServicesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B88B3A2B63A115002D24EE /* ServicesViewController.swift */; };
 		30B88B3D2B63C18B002D24EE /* ServiceCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B88B3C2B63C18B002D24EE /* ServiceCollectionViewCell.swift */; };
 		30B88B412B63D5F3002D24EE /* FastArrivalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 30B88B402B63D5F3002D24EE /* FastArrivalViewController.swift */; };
@@ -94,6 +96,8 @@
 		309EE6AF2B77DB3500652DDD /* OrderManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderManager.swift; sourceTree = "<group>"; };
 		309EE6B12B7AAFFF00652DDD /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		309EE6B62B7AB03600652DDD /* Tajawal-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Tajawal-Regular.ttf"; path = "../../Downloads/Tajawal/Tajawal-Regular.ttf"; sourceTree = "<group>"; };
+		30AB0F562B7E7EB200341B59 /* MyOrder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrder.swift; sourceTree = "<group>"; };
+		30AB0F582B7E7EFF00341B59 /* MyOrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyOrderViewController.swift; sourceTree = "<group>"; };
 		30B88B3A2B63A115002D24EE /* ServicesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicesViewController.swift; sourceTree = "<group>"; };
 		30B88B3C2B63C18B002D24EE /* ServiceCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServiceCollectionViewCell.swift; sourceTree = "<group>"; };
 		30B88B402B63D5F3002D24EE /* FastArrivalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FastArrivalViewController.swift; sourceTree = "<group>"; };
@@ -173,6 +177,7 @@
 				306022CB2B6C278400DED8B3 /* OrdersHistoryViewController.swift */,
 				3017EBE62B74F5FA00B32B0F /* SerialNumberViewController.swift */,
 				30606E312B697A630021D00B /* AboutViewController.swift */,
+				30AB0F582B7E7EFF00341B59 /* MyOrderViewController.swift */,
 			);
 			path = Fourth;
 			sourceTree = "<group>";
@@ -245,6 +250,7 @@
 				306022CE2B6FC11900DED8B3 /* OrderHistory.swift */,
 				30714FD72B73FFCB00912598 /* CheckOutOrder.swift */,
 				3017EBE82B74FA5F00B32B0F /* SerialNumber.swift */,
+				30AB0F562B7E7EB200341B59 /* MyOrder.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -437,6 +443,8 @@
 				309EE6B02B77DB3500652DDD /* OrderManager.swift in Sources */,
 				306022CC2B6C278400DED8B3 /* OrdersHistoryViewController.swift in Sources */,
 				308B4CE32B62B5B8005E194E /* ViewController.swift in Sources */,
+				30AB0F592B7E7EFF00341B59 /* MyOrderViewController.swift in Sources */,
+				30AB0F572B7E7EB200341B59 /* MyOrder.swift in Sources */,
 				308C5CC82B64F8850013579C /* LoginViewController.swift in Sources */,
 				30606E3A2B6AF0780021D00B /* CheckOutViewController.swift in Sources */,
 				308B4CDF2B62B5B8005E194E /* AppDelegate.swift in Sources */,
@@ -623,7 +631,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.hct.Luggage-Express";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hct.Luggage-Express-3";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -657,7 +665,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = "com.hct.Luggage-Express";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.hct.Luggage-Express-3";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

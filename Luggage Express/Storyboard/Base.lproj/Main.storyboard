@@ -51,7 +51,7 @@
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                        <textInputTraits key="textInputTraits" textContentType="email"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
                                         <connections>
                                             <outlet property="delegate" destination="BYZ-38-t0r" id="8os-wo-VFg"/>
                                         </connections>
@@ -150,10 +150,93 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="CqS-Ci-z9g">
-                                <rect key="frame" x="127.33333333333333" y="49.999999999999993" width="138.33333333333337" height="126.33333333333331"/>
+                                <rect key="frame" x="127.33333333333333" y="50" width="138.33333333333337" height="126.33333333333331"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MaB-3y-2OK">
+                                <rect key="frame" x="10" y="676.33333333333337" width="373" height="51"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Sign Up">
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="baseBackgroundColor" name="Button"/>
+                                </buttonConfiguration>
+                                <connections>
+                                    <action selector="onClickSignIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gam-RK-aGO"/>
+                                    <action selector="onClickSignUp:" destination="2TL-vy-Jh2" eventType="touchUpInside" id="T9D-ch-Gww"/>
+                                </connections>
+                            </button>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="28" translatesAutoresizingMaskIntoConstraints="NO" id="DDh-Bu-aBF">
+                                <rect key="frame" x="10" y="271.33333333333331" width="373" height="343.99999999999994"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MDe-HG-tuv">
+                                        <rect key="frame" x="0.0" y="0.0" width="373" height="34"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <textInputTraits key="textInputTraits" textContentType="name"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="2TL-vy-Jh2" id="s6y-2w-8p9"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Last Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RhB-Lp-dn8">
+                                        <rect key="frame" x="0.0" y="62" width="373" height="34"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <textInputTraits key="textInputTraits" textContentType="name"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="2TL-vy-Jh2" id="Tk7-Tc-KjO"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email Address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tnj-9s-AQP">
+                                        <rect key="frame" x="0.0" y="124" width="373" height="34"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="emailAddress" textContentType="email"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="2TL-vy-Jh2" id="xRf-13-JHN"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Phone Number" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s1T-8P-gI7">
+                                        <rect key="frame" x="0.0" y="186" width="373" height="34"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="2TL-vy-Jh2" id="UDn-qw-aD2"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="15" translatesAutoresizingMaskIntoConstraints="NO" id="CzJ-Ur-l0c">
+                                        <rect key="frame" x="0.0" y="248.00000000000006" width="373" height="34"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" secureTextEntry="YES" textContentType="new-password"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="2TL-vy-Jh2" id="ebk-4a-Egd"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D9s-4p-b98">
+                                        <rect key="frame" x="0.0" y="310.00000000000006" width="373" height="34"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="new-password"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="2TL-vy-Jh2" id="vhx-aj-Zxq"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                            </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WX9-jN-247">
+                                <rect key="frame" x="10" y="184" width="373" height="56"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" systemColor="systemRedColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5CG-n7-Y2f">
-                                <rect key="frame" x="10" y="581" width="270.66666666666669" height="34.333333333333371"/>
+                                <rect key="frame" x="10" y="625.33333333333337" width="270.66666666666669" height="34.333333333333371"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Already have an account?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y9b-cS-YJY">
                                         <rect key="frame" x="0.0" y="0.0" width="195" height="34.333333333333336"/>
@@ -173,112 +256,28 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MaB-3y-2OK">
-                                <rect key="frame" x="10" y="631.66666666666663" width="373" height="51.333333333333329"/>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="filled" title="Sign Up">
-                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    <color key="baseBackgroundColor" name="Button"/>
-                                </buttonConfiguration>
-                                <connections>
-                                    <action selector="onClickSignIn:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Gam-RK-aGO"/>
-                                    <action selector="onClickSignUp:" destination="2TL-vy-Jh2" eventType="touchUpInside" id="T9D-ch-Gww"/>
-                                </connections>
-                            </button>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="1i6-hX-2w9">
-                                <rect key="frame" x="10" y="269.33333333333331" width="373" height="303.99999999999994"/>
-                                <subviews>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="First Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="MDe-HG-tuv">
-                                        <rect key="frame" x="0.0" y="0.0" width="373" height="34"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <textInputTraits key="textInputTraits" textContentType="name"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="2TL-vy-Jh2" id="s6y-2w-8p9"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Last Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="RhB-Lp-dn8">
-                                        <rect key="frame" x="0.0" y="54" width="373" height="34"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <textInputTraits key="textInputTraits" textContentType="name"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="2TL-vy-Jh2" id="Tk7-Tc-KjO"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Phone Number" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s1T-8P-gI7">
-                                        <rect key="frame" x="0.0" y="108" width="373" height="34"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <textInputTraits key="textInputTraits" textContentType="tel"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="2TL-vy-Jh2" id="UDn-qw-aD2"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Email Address" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Tnj-9s-AQP">
-                                        <rect key="frame" x="0.0" y="162" width="373" height="34"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <textInputTraits key="textInputTraits" textContentType="email"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="2TL-vy-Jh2" id="xRf-13-JHN"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CzJ-Ur-l0c">
-                                        <rect key="frame" x="0.0" y="216" width="373" height="34"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="new-password"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="2TL-vy-Jh2" id="ebk-4a-Egd"/>
-                                        </connections>
-                                    </textField>
-                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Confirm Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="D9s-4p-b98">
-                                        <rect key="frame" x="0.0" y="270.00000000000006" width="373" height="34"/>
-                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <textInputTraits key="textInputTraits" secureTextEntry="YES" textContentType="new-password"/>
-                                        <connections>
-                                            <outlet property="delegate" destination="2TL-vy-Jh2" id="vhx-aj-Zxq"/>
-                                        </connections>
-                                    </textField>
-                                </subviews>
-                            </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WX9-jN-247">
-                                <rect key="frame" x="10" y="184" width="373" height="56"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" systemColor="systemRedColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="WJ9-Fv-cPH"/>
                         <color key="backgroundColor" name="Background"/>
                         <constraints>
                             <constraint firstItem="JBJ-Pt-aO5" firstAttribute="leading" secondItem="WJ9-Fv-cPH" secondAttribute="leading" constant="10" id="3db-KT-Ccv"/>
                             <constraint firstItem="WX9-jN-247" firstAttribute="top" secondItem="CqS-Ci-z9g" secondAttribute="bottom" constant="7.6699999999999999" id="8Ff-rU-6Ys"/>
-                            <constraint firstItem="1i6-hX-2w9" firstAttribute="centerX" secondItem="9x6-l1-sOe" secondAttribute="centerX" id="AUc-PW-ZOd"/>
                             <constraint firstItem="WX9-jN-247" firstAttribute="height" secondItem="9x6-l1-sOe" secondAttribute="height" multiplier="0.0657277" id="IVi-Hc-ubE"/>
                             <constraint firstItem="MaB-3y-2OK" firstAttribute="leading" secondItem="WJ9-Fv-cPH" secondAttribute="leading" constant="10" id="MqF-xI-9Kj"/>
-                            <constraint firstItem="5CG-n7-Y2f" firstAttribute="top" secondItem="1i6-hX-2w9" secondAttribute="bottom" constant="7.5" id="MvK-AU-fLs"/>
                             <constraint firstItem="JBJ-Pt-aO5" firstAttribute="top" secondItem="WX9-jN-247" secondAttribute="bottom" constant="4.3300000000000001" id="QX2-ZW-JrD"/>
+                            <constraint firstItem="5CG-n7-Y2f" firstAttribute="top" secondItem="DDh-Bu-aBF" secondAttribute="bottom" constant="10" id="RIg-MU-Pcj"/>
                             <constraint firstItem="CqS-Ci-z9g" firstAttribute="top" secondItem="WJ9-Fv-cPH" secondAttribute="top" constant="50" id="RUd-p6-blS"/>
-                            <constraint firstItem="1i6-hX-2w9" firstAttribute="top" secondItem="JBJ-Pt-aO5" secondAttribute="bottom" constant="8" id="YhU-AW-BiS"/>
+                            <constraint firstItem="WJ9-Fv-cPH" firstAttribute="trailing" secondItem="DDh-Bu-aBF" secondAttribute="trailing" constant="10" id="Vso-n4-Y3n"/>
+                            <constraint firstItem="DDh-Bu-aBF" firstAttribute="leading" secondItem="WJ9-Fv-cPH" secondAttribute="leading" constant="10" id="ZgR-u0-bzX"/>
                             <constraint firstItem="5CG-n7-Y2f" firstAttribute="leading" secondItem="WJ9-Fv-cPH" secondAttribute="leading" constant="10" id="bIT-pQ-E7E"/>
                             <constraint firstItem="MaB-3y-2OK" firstAttribute="height" secondItem="9x6-l1-sOe" secondAttribute="height" multiplier="0.05997" id="cLg-rN-US4"/>
                             <constraint firstItem="CqS-Ci-z9g" firstAttribute="width" secondItem="9x6-l1-sOe" secondAttribute="width" multiplier="0.352" id="ccC-DV-lun"/>
-                            <constraint firstItem="1i6-hX-2w9" firstAttribute="leading" secondItem="WJ9-Fv-cPH" secondAttribute="leading" constant="10" id="cgc-49-fui"/>
                             <constraint firstItem="WX9-jN-247" firstAttribute="leading" secondItem="WJ9-Fv-cPH" secondAttribute="leading" constant="10" id="eDz-b2-JLX"/>
                             <constraint firstItem="CqS-Ci-z9g" firstAttribute="centerX" secondItem="9x6-l1-sOe" secondAttribute="centerX" id="ePu-fj-Xtg"/>
                             <constraint firstItem="CqS-Ci-z9g" firstAttribute="height" secondItem="9x6-l1-sOe" secondAttribute="height" multiplier="0.148426" id="k03-me-W3k"/>
                             <constraint firstItem="MaB-3y-2OK" firstAttribute="top" secondItem="5CG-n7-Y2f" secondAttribute="bottom" constant="16.5" id="n5h-IZ-ytL"/>
+                            <constraint firstItem="DDh-Bu-aBF" firstAttribute="top" secondItem="JBJ-Pt-aO5" secondAttribute="bottom" constant="10" id="qGM-U1-jUe"/>
                             <constraint firstAttribute="trailing" secondItem="WX9-jN-247" secondAttribute="trailing" constant="10" id="u9N-bE-R3M"/>
-                            <constraint firstItem="WJ9-Fv-cPH" firstAttribute="trailing" secondItem="1i6-hX-2w9" secondAttribute="trailing" constant="10" id="uKU-jn-099"/>
                             <constraint firstItem="WJ9-Fv-cPH" firstAttribute="trailing" secondItem="MaB-3y-2OK" secondAttribute="trailing" constant="10" id="v2C-07-tGl"/>
                         </constraints>
                     </view>
@@ -334,7 +333,6 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="w0A-f6-X1a"/>
         <segue reference="blI-gR-oyf"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" systemColor="linkColor"/>

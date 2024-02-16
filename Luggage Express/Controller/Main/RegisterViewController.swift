@@ -4,6 +4,8 @@ import Firebase
 
 class RegisterViewController: UIViewController, UITextFieldDelegate{
 
+    @IBOutlet weak var scrollView: UIScrollView!
+    
     @IBOutlet weak var lblError: UILabel!
     @IBOutlet weak var lblPhoneNumber: UITextField!
     @IBOutlet weak var lblEmailAddress: UITextField!
@@ -29,10 +31,77 @@ class RegisterViewController: UIViewController, UITextFieldDelegate{
         changePlaceHolderColor(stringText: "Email Address...", placeholder: lblEmailAddress)
         changePlaceHolderColor(stringText: "Password...", placeholder: lblPassword)
         changePlaceHolderColor(stringText: "Confirm Password...", placeholder: lblConfirmPassword)
+        
+        setup()
+    }
     
-        // Add tap gesture recognizer to dismiss keyboard
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(tapGesture)
+    private func setup() {
+        setupDismissKeyboardGesture()
+        setupKeyboardHiding()
+    }
+    
+    private func setupKeyboardHiding() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardWillShow(sender: NSNotification) {
+        guard let userInfo = sender.userInfo,
+              let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+              let currentInput = findFirstResponder() else {
+            return
+        }
+        
+        let keyboardTopY = keyboardFrame.cgRectValue.origin.y
+        let convertedInputFrame = view.convert(currentInput.frame, from: currentInput.superview)
+        let inputBottomY = convertedInputFrame.origin.y + convertedInputFrame.size.height
+        
+        if inputBottomY > keyboardTopY {
+            let inputY = convertedInputFrame.origin.y
+            let newFrameY = (inputY - keyboardTopY / 2) * -1
+            view.frame.origin.y = newFrameY+80
+        }
+    }
+
+    func findFirstResponder() -> UIView? {
+        for view in view.subviews {
+            if view.isFirstResponder {
+                return view
+            }
+            if let responder = findFirstResponder(in: view) {
+                return responder
+            }
+        }
+        return nil
+    }
+
+    func findFirstResponder(in view: UIView) -> UIView? {
+        for subview in view.subviews {
+            if subview.isFirstResponder {
+                return subview
+            }
+            if let responder = findFirstResponder(in: subview) {
+                return responder
+            }
+        }
+        return nil
+    }
+
+
+    @objc func keyboardWillHide(notification: NSNotification)
+    {
+        view.frame.origin.y = 0
+    }
+    
+    private func setupDismissKeyboardGesture() {
+        let dismissKeyboardTap = UITapGestureRecognizer(target: self, action: #selector(viewTapped(_: )))
+        view.addGestureRecognizer(dismissKeyboardTap)
+    }
+        
+    @objc func viewTapped(_ recognizer: UITapGestureRecognizer) {
+        if recognizer.state == UIGestureRecognizer.State.ended {
+            view.endEditing(true) // resign first responder
+        }
     }
     
     @objc func dismissKeyboard() {

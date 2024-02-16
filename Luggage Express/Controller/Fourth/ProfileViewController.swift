@@ -65,7 +65,7 @@ class ProfileViewController: UIViewController {
     
     @IBAction func onClickOrderHistory(_ sender: Any) {
         animateView(orderView)
-        navigateToView(identifier: "ordershistory_id")
+        navigateToView(identifier: "myorder_id")
     }
     
     @IBAction func onClickWallet(_ sender: Any) {
