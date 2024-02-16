@@ -1,5 +1,5 @@
 import Foundation
-import FirebaseFirestore
+import Firebase
 import MapKit
 
 class OrderManager {

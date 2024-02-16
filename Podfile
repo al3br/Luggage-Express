@@ -19,5 +19,6 @@ target 'Luggage Express' do
 
  pod "DropDown"
  pod 'SOTabBar'
+ pod 'Firebase'
  pod 'Firebase/Storage'
 end
