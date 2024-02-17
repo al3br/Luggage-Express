@@ -14,6 +14,7 @@ class LocationInfoViewController: UIViewController, MKMapViewDelegate {
     var selectedLuggage: String = ""
     var comment: String = ""
     var total: Double = 0.0
+    var serialNumber: String = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()

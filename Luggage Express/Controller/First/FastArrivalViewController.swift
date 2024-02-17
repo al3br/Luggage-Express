@@ -312,20 +312,21 @@ class FastArrivalViewController: UIViewController, UITextFieldDelegate, UITextVi
                 navigationController?.pushViewController(vcLocation, animated: true)
             } else {
                 // Instantiate LocationInfoViewController from storyboard
-                guard let vcLocation = storyboard?.instantiateViewController(withIdentifier: "insideairport_ID") as? InsideAirportViewController else {
+                guard let vcInsideAirport = storyboard?.instantiateViewController(withIdentifier: "insideairport_ID") as? InsideAirportViewController else {
                     return
                 }
 
                 // Pass data to LocationInfoViewController
-                vcLocation.outsideChecked = outsideChecked
-                vcLocation.selectedLuggage = selectLuggage.text ?? ""
-                vcLocation.comment = lblComment.text
+                vcInsideAirport.outsideChecked = outsideChecked
+                vcInsideAirport.selectedLuggage = selectLuggage.text!
+                vcInsideAirport.comment = lblComment.text
+                vcInsideAirport.serialNumber = lblSerialNumber.text!
                 if let stringText = lblTotal.text, let totalValue = Double(stringText) {
-                    vcLocation.total = totalValue
+                    vcInsideAirport.total = totalValue
                 }
 
                 // Push LocationInfoViewController onto the navigation stack
-                navigationController?.pushViewController(vcLocation, animated: true)
+                navigationController?.pushViewController(vcInsideAirport, animated: true)
             }
         }
     }

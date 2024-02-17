@@ -1,9 +1,14 @@
 import UIKit
 import Firebase
-import CoreImage
+import CoreImage.CIFilterBuiltins
 import FirebaseStorage
 
 class CheckOutViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    var activityIndicator: UIActivityIndicatorView!
+    
+    let context = CIContext()
+    let filter = CIFilter.qrCodeGenerator()
     
     var fastArrival: Bool = true
     var outsideChecked: Bool = true
@@ -14,6 +19,7 @@ class CheckOutViewController: UIViewController, UICollectionViewDelegate, UIColl
     var Latitude: Double = 0.0
     var airportName: String = ""
     var locationDescription: String = ""
+    var serialNumber: String = ""
 
     @IBOutlet weak var payButton: UIButton!
     @IBOutlet weak var lblTotal: UILabel!
@@ -37,7 +43,7 @@ class CheckOutViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        setupActivityIndicator()
         let appleIcon = UIImage(systemName: "applelogo")
         payButton.setImage(appleIcon, for: .normal)
         payButton.setTitle("Pay", for: .normal)
@@ -57,6 +63,38 @@ class CheckOutViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
         lblTotal.text = "\(total * 1.05) AED"
         
+    }
+    
+    func setupActivityIndicator() {
+        // Create a blur effect view
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.alpha = 0.3
+        view.addSubview(blurEffectView)
+
+        // Create the activity indicator
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+
+        // Make sure the indicator is on top of the blur view
+        view.bringSubviewToFront(activityIndicator)
+        activityIndicator.startAnimating()
+    }
+
+    func stopAnimating() {
+        // Stop animating the activity indicator
+        activityIndicator.stopAnimating()
+
+        // Remove the blur effect view from the superview
+        for subview in view.subviews {
+            if let blurView = subview as? UIVisualEffectView {
+                blurView.removeFromSuperview()
+            }
+        }
     }
 
     @IBAction func onClickPay(_ sender: Any) {
@@ -122,32 +160,28 @@ class CheckOutViewController: UIViewController, UICollectionViewDelegate, UIColl
             }
         }
     }
+    
+    func generateQRCode(from string: String) -> UIImage {
+        let data = string.data(using: String.Encoding.ascii)
+        if let QRFilter = CIFilter(name: "CIQRCodeGenerator") {
+            QRFilter.setValue(data, forKey: "inputMessage")
+            guard let QRImage = QRFilter.outputImage else {return UIImage(systemName: "xmark.circle") ?? UIImage()}
+            
+            let transformScale = CGAffineTransform(scaleX: 5.0, y: 5.0)
+            let scaledQRImage = QRImage.transformed(by: transformScale)
+            
+            return UIImage(ciImage: scaledQRImage)
+        }
+        return UIImage(systemName: "xmark.circle") ?? UIImage()
+    }
 
-    func generateAndStoreQRCode(orderNumber: Int) {
-        // Generate the QR code image
-        guard let qrCodeString = "\(orderNumber)".data(using: String.Encoding.ascii),
-              let qrFilter = CIFilter(name: "CIQRCodeGenerator") else {
-            print("Failed to generate QR code data.")
-            return
-        }
-        
-        qrFilter.setValue(qrCodeString, forKey: "inputMessage")
-        guard let qrImage = qrFilter.outputImage else {
-            print("Failed to generate QR code image.")
-            return
-        }
-        
-        guard let qrCodeImage = UIImage(ciImage: qrImage).qrCodeImage() else {
-            print("Failed to create QR code UIImage.")
-            return
-        }
-
+    func generateAndStoreQRCode(orderNumber: Int, completion: @escaping () -> Void) {
         // Upload the QR code image to Firebase Storage
         let storage = Storage.storage()
         let storageRef = storage.reference()
         let qrCodeRef = storageRef.child("qr_codes/\(orderNumber).png")
         
-        guard let imageData = qrCodeImage.pngData() else {
+        guard let imageData = generateQRCode(from: "\(orderNumber)").pngData() else {
             print("Failed to convert QR code image to data.")
             return
         }
@@ -160,13 +194,13 @@ class CheckOutViewController: UIViewController, UICollectionViewDelegate, UIColl
                 print("Error uploading QR code image: \(error)")
             } else {
                 print("QR code image uploaded successfully.")
-                // You can handle success here, such as displaying a success message to the user.
+                completion() // Call the completion handler
             }
         }
     }
 
-    
     func storeDataToDatabase() {
+        self.setupActivityIndicator()
         guard let currentUser = Auth.auth().currentUser else {
             // Handle when the user is not logged in
             return
@@ -236,7 +270,8 @@ class CheckOutViewController: UIViewController, UICollectionViewDelegate, UIColl
                         "total": self.total,
                         "longitude": self.Longitude,
                         "latitude": self.Latitude,
-                        "order_id": newOrderID
+                        "order_id": newOrderID,
+                        "serial_number": self.serialNumber
                     ]
                     
                     // Save the data to Firestore
@@ -245,13 +280,18 @@ class CheckOutViewController: UIViewController, UICollectionViewDelegate, UIColl
                             print("Error writing document: \(error)")
                         } else {
                             print("Document successfully written!")
-                            self.generateAndStoreQRCode(orderNumber: newOrderID)
-                            guard let vcSuccess = self.storyboard?.instantiateViewController(withIdentifier: "success_ID") as? SuccessCheckOutViewController else {
-                                return
+                            self.generateAndStoreQRCode(orderNumber: newOrderID) {
+                                // This closure will be executed after the QR code image is uploaded successfully
+                                DispatchQueue.main.async {
+                                    guard let vcSuccess = self.storyboard?.instantiateViewController(withIdentifier: "success_ID") as? SuccessCheckOutViewController else {
+                                        return
+                                    }
+                                    self.stopAnimating()
+                                    // Pass data to CheckOutViewController
+                                    vcSuccess.orderNumber = newOrderID
+                                    self.navigationController?.pushViewController(vcSuccess, animated: true)
+                                }
                             }
-                            // Pass data to CheckOutViewController
-                            vcSuccess.orderNumber = newOrderID
-                            self.navigationController?.pushViewController(vcSuccess, animated: true)
                         }
                     }
                 } else {
@@ -261,7 +301,6 @@ class CheckOutViewController: UIViewController, UICollectionViewDelegate, UIColl
         }
     }
 
-    
     @IBAction func onClickBack(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }

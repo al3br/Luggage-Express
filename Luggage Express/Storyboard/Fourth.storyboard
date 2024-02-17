@@ -749,19 +749,19 @@
                                             <rect key="frame" x="0.0" y="0.0" width="393" height="242"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Order Number:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hyX-wm-gRP">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Order Number:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hyX-wm-gRP">
                                                     <rect key="frame" x="0.0" y="8" width="393" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="#1000001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YyO-xH-xfJ">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="#1000001" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YyO-xH-xfJ">
                                                     <rect key="frame" x="0.0" y="37" width="393" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status: Pending" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPA-Cv-olF">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Status: Pending" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fPA-Cv-olF">
                                                     <rect key="frame" x="0.0" y="66" width="393" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -772,21 +772,25 @@
                                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </imageView>
                                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="chevron.right" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="YMX-wQ-ADj">
-                                                    <rect key="frame" x="372.33333333333331" y="66" width="12.666666666666686" height="16.666666666666671"/>
+                                                    <rect key="frame" x="354" y="2" width="29" height="238.33333333333331"/>
                                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 </imageView>
                                             </subviews>
                                             <color key="backgroundColor" name="Background"/>
                                             <constraints>
                                                 <constraint firstItem="OkW-YV-E2f" firstAttribute="leading" secondItem="Qx1-T1-gvf" secondAttribute="leading" constant="76" id="00z-2F-LMY"/>
+                                                <constraint firstItem="OkW-YV-E2f" firstAttribute="width" secondItem="Qx1-T1-gvf" secondAttribute="width" multiplier="0.610687" id="65I-Nm-OP9"/>
                                                 <constraint firstAttribute="trailing" secondItem="OkW-YV-E2f" secondAttribute="trailing" constant="77" id="EjQ-jG-JGa"/>
-                                                <constraint firstAttribute="trailing" secondItem="YMX-wQ-ADj" secondAttribute="trailing" constant="8" id="HlL-FI-cPO"/>
                                                 <constraint firstItem="fPA-Cv-olF" firstAttribute="leading" secondItem="Qx1-T1-gvf" secondAttribute="leading" id="Ome-Sc-b2T"/>
+                                                <constraint firstAttribute="bottom" secondItem="YMX-wQ-ADj" secondAttribute="bottom" id="Soe-NY-hbl"/>
                                                 <constraint firstItem="fPA-Cv-olF" firstAttribute="top" secondItem="YyO-xH-xfJ" secondAttribute="bottom" constant="8" id="Vpr-7x-0s7"/>
+                                                <constraint firstAttribute="bottom" secondItem="OkW-YV-E2f" secondAttribute="bottom" constant="17.670000000000002" id="XVL-cE-E3F"/>
                                                 <constraint firstAttribute="trailing" secondItem="fPA-Cv-olF" secondAttribute="trailing" id="Yvu-uE-1BU"/>
+                                                <constraint firstItem="YMX-wQ-ADj" firstAttribute="width" secondItem="Qx1-T1-gvf" secondAttribute="width" multiplier="0.0737913" id="aEW-kl-gp2"/>
                                                 <constraint firstItem="hyX-wm-gRP" firstAttribute="top" secondItem="Qx1-T1-gvf" secondAttribute="top" constant="8" id="cgg-zl-bL2"/>
+                                                <constraint firstAttribute="trailing" secondItem="YMX-wQ-ADj" secondAttribute="trailing" constant="10" id="eVe-Nw-VIC"/>
                                                 <constraint firstItem="YyO-xH-xfJ" firstAttribute="leading" secondItem="Qx1-T1-gvf" secondAttribute="leading" id="evy-f9-HiG"/>
-                                                <constraint firstItem="YMX-wQ-ADj" firstAttribute="top" secondItem="YyO-xH-xfJ" secondAttribute="bottom" constant="6" id="l69-nX-LE3"/>
+                                                <constraint firstItem="YMX-wQ-ADj" firstAttribute="top" secondItem="Qx1-T1-gvf" secondAttribute="top" id="fhG-TS-SU1"/>
                                                 <constraint firstItem="OkW-YV-E2f" firstAttribute="top" secondItem="fPA-Cv-olF" secondAttribute="bottom" constant="6.3300000000000001" id="mA0-s7-h1J"/>
                                                 <constraint firstItem="hyX-wm-gRP" firstAttribute="leading" secondItem="Qx1-T1-gvf" secondAttribute="leading" id="qho-MW-e5y"/>
                                                 <constraint firstAttribute="trailing" secondItem="hyX-wm-gRP" secondAttribute="trailing" id="xcG-9i-6mA"/>

@@ -2,6 +2,7 @@ import UIKit
 import SOTabBar
 import DropDown
 import Firebase
+import FirebaseStorage
 
 class BookArrivalViewController: UIViewController, UITextFieldDelegate {
 
@@ -23,10 +24,12 @@ class BookArrivalViewController: UIViewController, UITextFieldDelegate {
     var airports: [String] = []
     
     var serialNumbers: [String] = []
+    
+    var activityIndicator: UIActivityIndicatorView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         changePlaceHolderColor(stringText: "Departure (City-Airport-Country)", placeholder: departureTextField)
         changePlaceHolderColor(stringText: "Arrival (City-Airport-Country)", placeholder: arrivalTextField)
 
@@ -46,6 +49,39 @@ class BookArrivalViewController: UIViewController, UITextFieldDelegate {
         view.addGestureRecognizer(tapGesture)
 
         
+    }
+    
+    func setupActivityIndicator() {
+        // Create a blur effect view
+        let blurEffect = UIBlurEffect(style: .light)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.frame = view.bounds
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        blurEffectView.alpha = 0.3
+        view.addSubview(blurEffectView)
+
+        // Create the activity indicator
+        activityIndicator = UIActivityIndicatorView(style: .large)
+        activityIndicator.center = view.center
+        activityIndicator.hidesWhenStopped = true
+        view.addSubview(activityIndicator)
+
+        // Make sure the indicator is on top of the blur view
+        view.bringSubviewToFront(activityIndicator)
+        
+        activityIndicator.startAnimating()
+    }
+
+    func stopAnimating() {
+        // Stop animating the activity indicator
+        activityIndicator.stopAnimating()
+
+        // Remove the blur effect view from the superview
+        for subview in view.subviews {
+            if let blurView = subview as? UIVisualEffectView {
+                blurView.removeFromSuperview()
+            }
+        }
     }
     
     @IBAction func onClickSelectSerialNumber(_ sender: Any) {
@@ -75,6 +111,177 @@ class BookArrivalViewController: UIViewController, UITextFieldDelegate {
             view.endEditing(true)
     }
 
+    func generateOrderID() {
+        let db = Firestore.firestore()
+        let ordersRef = db.collection("orders")
+
+        // Query to get the last order ID
+        ordersRef.order(by: "order_id", descending: true).limit(to: 1).getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error getting documents: \(error.localizedDescription)")
+                return
+            }
+
+            var lastOrderID = 1000000 // Default starting order ID if no orders exist yet
+
+            if let snapshot = snapshot {
+                for document in snapshot.documents {
+                    if let orderID = document.data()["order_id"] as? Int {
+                        lastOrderID = orderID + 1
+                        break
+                    }
+                }
+            }
+
+            // Now you have the last order ID, you can use it to create a new order
+            let newOrderID = lastOrderID
+            let newOrderRef = ordersRef.document()
+
+            newOrderRef.setData(["order_id": newOrderID]) { error in
+                if let error = error {
+                    print("Error adding document: \(error.localizedDescription)")
+                } else {
+                    print("Order document added with ID: \(newOrderRef.documentID), Order ID: \(newOrderID)")
+                }
+            }
+        }
+    }
+    
+    func generateQRCode(from string: String) -> UIImage {
+        let data = string.data(using: String.Encoding.ascii)
+        if let QRFilter = CIFilter(name: "CIQRCodeGenerator") {
+            QRFilter.setValue(data, forKey: "inputMessage")
+            guard let QRImage = QRFilter.outputImage else {return UIImage(systemName: "xmark.circle") ?? UIImage()}
+            
+            let transformScale = CGAffineTransform(scaleX: 5.0, y: 5.0)
+            let scaledQRImage = QRImage.transformed(by: transformScale)
+            
+            return UIImage(ciImage: scaledQRImage)
+        }
+        return UIImage(systemName: "xmark.circle") ?? UIImage()
+    }
+
+    func generateAndStoreQRCode(orderNumber: Int, completion: @escaping () -> Void) {
+        // Upload the QR code image to Firebase Storage
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        let qrCodeRef = storageRef.child("qr_codes/\(orderNumber).png")
+        
+        guard let imageData = generateQRCode(from: "\(orderNumber)").pngData() else {
+            print("Failed to convert QR code image to data.")
+            return
+        }
+        
+        let metadata = StorageMetadata()
+        metadata.contentType = "image/png"
+        
+        qrCodeRef.putData(imageData, metadata: metadata) { metadata, error in
+            if let error = error {
+                print("Error uploading QR code image: \(error)")
+            } else {
+                print("QR code image uploaded successfully.")
+                completion() // Call the completion handler
+            }
+        }
+    }
+
+    func storeDataToDatabase() {
+        self.setupActivityIndicator()
+        guard let currentUser = Auth.auth().currentUser else {
+            // Handle when the user is not logged in
+            return
+        }
+        
+        // Assuming you have a Firestore database reference
+        let db = Firestore.firestore()
+        
+        let ordersRef = db.collection("orders")
+
+        // Query to get the last order ID
+        ordersRef.order(by: "order_id", descending: true).limit(to: 1).getDocuments { (snapshot, error) in
+            if let error = error {
+                print("Error getting documents: \(error.localizedDescription)")
+                return
+            }
+            
+            var lastOrderID = 1000000 // Default starting order ID if no orders exist yet
+            
+            if let snapshot = snapshot {
+                for document in snapshot.documents {
+                    if let orderID = document.data()["order_id"] as? Int {
+                        lastOrderID = orderID + 1
+                        
+                        break
+                    }
+                }
+            }
+            
+            // Now you have the last order ID, you can use it to create a new order
+            let newOrderID = lastOrderID
+            
+            // Convert your date string to a Timestamp object
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+            let date = dateFormatter.date(from: Date().description)
+
+            // Create a Timestamp object
+            let timestamp = Timestamp(date: date!)
+            
+            // Retrieve user details from the 'users' collection
+            db.collection("users").document(currentUser.uid).getDocument { (userDocument, error) in
+                if let error = error {
+                    print("Error getting user document: \(error)")
+                    return
+                }
+                
+                if let userData = userDocument?.data(),
+                   let email = userData["email"] as? String,
+                   let firstName = userData["firstName"] as? String,
+                   let lastName = userData["lastName"] as? String,
+                   let phoneNumber = userData["phoneNumber"] as? String {
+                    
+                    // Create a new order document
+                    let orderData: [String: Any] = [
+                        "user_id": currentUser.uid,
+                        "email": email,
+                        "firstName": firstName,
+                        "lastName": lastName,
+                        "phoneNumber": phoneNumber,
+                        "status": "pending",
+                        "date": timestamp,
+                        "departure": self.departureTextField.text!,
+                        "arrival": self.arrivalTextField.text!,
+                        "serial_number": self.lblSerialNumber.text!,
+                        "order_id": newOrderID
+                    ]
+                    
+                    // Save the data to Firestore
+                    ordersRef.addDocument(data: orderData) { error in
+                        if let error = error {
+                            print("Error writing document: \(error)")
+                        } else {
+                            print("Document successfully written!")
+                            self.generateAndStoreQRCode(orderNumber: newOrderID) {
+                                // This closure will be executed after the QR code image is uploaded successfully
+                                DispatchQueue.main.async {
+                                    guard let vcSuccess = self.storyboard?.instantiateViewController(withIdentifier: "success_ID") as? SuccessCheckOutViewController else {
+                                        return
+                                    }
+                                    self.stopAnimating()
+                                    // Pass data to CheckOutViewController
+                                    vcSuccess.orderNumber = newOrderID
+                                    self.navigationController?.pushViewController(vcSuccess, animated: true)
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    print("User data not found or invalid format")
+                }
+            }
+        }
+    }
+    
     @IBAction func onClickCheckOut(_ sender: Any) {
         // Scale animation for the button
         UIView.animate(withDuration: 0.1, animations: {
@@ -85,7 +292,6 @@ class BookArrivalViewController: UIViewController, UITextFieldDelegate {
             }
         })
         storeDataToDatabase()
-        navigateToView(identifier: "success_ID")
     }
     
     func navigateToView(identifier: String) {
@@ -95,55 +301,6 @@ class BookArrivalViewController: UIViewController, UITextFieldDelegate {
         }
    
         navigationController?.pushViewController(destinationViewController, animated: true)
-    }
-    
-    func storeDataToDatabase() {
-        guard let currentUser = Auth.auth().currentUser else {
-                // Handle when the user is not logged in
-                return
-            }
-
-            // Assuming you have a Firestore database reference
-            let db = Firestore.firestore()
-
-            // Retrieve user details from the 'users' collection
-            db.collection("users").document(currentUser.uid).getDocument { (userDocument, error) in
-                if let error = error {
-                    print("Error getting user document: \(error)")
-                    return
-                }
-
-                if let userData = userDocument?.data(),
-                   let email = userData["email"] as? String,
-                   let firstName = userData["firstName"] as? String,
-                   let lastName = userData["lastName"] as? String,
-                   let phoneNumber = userData["phoneNumber"] as? String {
-                    
-                    // Assuming you have a 'data' collection in Firestore
-                    let dataRef = db.collection("orders").document()
-
-                    // Store the provided fields along with user details into the database
-                    dataRef.setData([
-                        "email": email,
-                        "firstName": firstName,
-                        "lastName": lastName,
-                        "phoneNumber": phoneNumber,
-                        "serialNumber": self.lblSerialNumber.text ?? "",
-                        "departure": self.departureTextField.text ?? "",
-                        "arrival": self.arrivalTextField.text ?? "",
-                        "status": "pending",
-                        "date": Date().description
-                    ]) { error in
-                        if let error = error {
-                            print("Error writing document: \(error)")
-                        } else {
-                            print("Document successfully written!")
-                        }
-                    }
-                } else {
-                    print("User data not found or invalid format")
-                }
-            }
     }
     
     func configureDropDown(dropDown: DropDown, anchorView: UIView, textField: UITextField) {

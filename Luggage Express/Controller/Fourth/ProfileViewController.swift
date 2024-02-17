@@ -36,8 +36,26 @@ class ProfileViewController: UIViewController {
         activityIndicator.hidesWhenStopped = true
         view.addSubview(activityIndicator)
 
-        // Make sure the indicator is on top of the background view
+        // Make sure the indicator is on top of the blur view
         view.bringSubviewToFront(activityIndicator)
+    }
+
+
+    func startAnimating() {
+        // Start animating the activity indicator
+        activityIndicator.startAnimating()
+    }
+
+    func stopAnimating() {
+        // Stop animating the activity indicator
+        activityIndicator.stopAnimating()
+
+        // Remove the blur effect view from the superview
+        for subview in view.subviews {
+            if let blurView = subview as? UIVisualEffectView {
+                blurView.removeFromSuperview()
+            }
+        }
     }
     
     
@@ -164,7 +182,7 @@ class ProfileViewController: UIViewController {
     }
     
     func loadUserData() {
-            activityIndicator.startAnimating()
+        self.startAnimating()
             // Get the current user
             guard let currentUser = Auth.auth().currentUser else {
                 // User is not logged in
@@ -188,10 +206,8 @@ class ProfileViewController: UIViewController {
                 } else {
                     // Document does not exist or error occurred
                     print("Error fetching user document: \(error?.localizedDescription ?? "Unknown error")")
-                    self.activityIndicator.stopAnimating()
+                    self.stopAnimating()
                 }
             }
-            
-           
         }
 }

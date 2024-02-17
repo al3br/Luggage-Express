@@ -1,9 +1,13 @@
 import UIKit
 import SOTabBar
+import FirebaseStorage
 
 class SuccessCheckOutViewController: UIViewController {
 
     @IBOutlet weak var homeButton: UIButton!
+    
+    
+    @IBOutlet weak var qrcodeImage: UIImageView!
     
     @IBOutlet weak var lblOrderNumber: UILabel!
     var orderNumber: Int = 10000000
@@ -16,7 +20,32 @@ class SuccessCheckOutViewController: UIViewController {
         let homeIcon = UIImage(systemName: "house")
         homeButton.setImage(homeIcon, for: .normal)
         homeButton.setTitle("Home", for: .normal)
+        
+        fetchQRCodeImageFromStorage(for: orderNumber)
 
+    }
+    
+    func fetchQRCodeImageFromStorage(for orderNumber: Int) {
+        // Create a reference to the Firebase Storage location where the QR code image is stored
+        let storage = Storage.storage()
+        let storageRef = storage.reference()
+        let qrCodeRef = storageRef.child("qr_codes/\(orderNumber).png")
+        
+        // Download the image data
+        qrCodeRef.getData(maxSize: 1 * 1024 * 1024) { data, error in
+            if let error = error {
+                print("Error downloading QR code image: \(error.localizedDescription)")
+                // Handle the error condition, such as displaying an error message to the user
+            } else if let imageData = data, let image = UIImage(data: imageData) {
+                // Update the UIImageView with the downloaded image
+                DispatchQueue.main.async {
+                    self.qrcodeImage.image = image
+                }
+            } else {
+                print("Error: Downloaded data is not in a valid image format.")
+                // Handle the error condition, such as displaying an error message to the user
+            }
+        }
     }
     
     @IBAction func onClickHome(_ sender: Any) {
@@ -50,6 +79,8 @@ class SuccessCheckOutViewController: UIViewController {
 
         navigationController.pushViewController(tabBarController, animated: true)
     }
+    
+    
     
 
 }

@@ -8,6 +8,7 @@ class InsideAirportViewController: UIViewController, UITextFieldDelegate, UIText
     var selectedLuggage: String = ""
     var comment: String = ""
     var total: Double = 0.0
+    var serialNumber: String = ""
     
     @IBOutlet weak var lblDescription: UITextView!
     @IBOutlet weak var arrivalTextField: UITextField!
