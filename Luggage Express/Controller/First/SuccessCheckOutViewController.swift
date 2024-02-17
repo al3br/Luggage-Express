@@ -15,6 +15,9 @@ class SuccessCheckOutViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Set the placeholder image
+        qrcodeImage.image = UIImage(named: "placeholder_image")
+        
         lblOrderNumber.text = "#\(orderNumber)"
         
         let homeIcon = UIImage(systemName: "house")

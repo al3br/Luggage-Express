@@ -12,15 +12,10 @@ class MyOrderViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupActivityIndicator()
-        
         collectionView.delegate = self
         collectionView.dataSource = self
 
         fetchOrdersForCurrentUser()
-        
-        
     }
     
     func setupActivityIndicator() {
@@ -40,10 +35,6 @@ class MyOrderViewController: UIViewController, UICollectionViewDelegate, UIColle
 
         // Make sure the indicator is on top of the blur view
         view.bringSubviewToFront(activityIndicator)
-    }
-
-    func startAnimating() {
-        // Start animating the activity indicator
         activityIndicator.startAnimating()
     }
 
@@ -60,8 +51,7 @@ class MyOrderViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     func fetchOrdersForCurrentUser() {
-        
-        self.startAnimating()
+        self.setupActivityIndicator()
         guard let currentUser = Auth.auth().currentUser else {
             return
         }
@@ -129,8 +119,8 @@ class MyOrderViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     // Implement the delegate method to set the size for each item (cell)
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = self.view.frame.width * 0.4 // Set the width of the cell to 50% of the collectionView's width
-        let height = self.view.frame.width * 0.45
+        let width = self.view.frame.width * 0.9 // Set the width of the cell to 50% of the collectionView's width
+        let height = self.view.frame.width * 0.6
         return CGSize(width: width, height: height)
     }
 
@@ -142,31 +132,30 @@ class MyOrderViewController: UIViewController, UICollectionViewDelegate, UIColle
         return 1
     }
 
-    
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let myOrderCell = cell as? MyOrderCollectionViewCell else {
-            return
-        }
-        myOrderCell.alpha = 0
-        myOrderCell.center.x -= 100
-        myOrderCell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1)
-            
-        UIView.animate(withDuration: 0.5) {
-            myOrderCell.alpha = 1
-            myOrderCell.center.x += 100
-        }
-        UIView.animate(withDuration: 0.5) {
-            myOrderCell.layer.transform = CATransform3DMakeScale(1, 1, 1)
-        }
-    }
-
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "myOrderCell", for: indexPath) as! MyOrderCollectionViewCell
         let order = arrMyOrders[indexPath.row]
         cell.setupCell(number: order.number, status: order.status, photo: order.image)
+        
+        // Reset cell state before applying animations
+        cell.alpha = 1.0
+        cell.transform = CGAffineTransform.identity
+        
+        // Apply animations
+        cell.alpha = 0
+        cell.center.x -= 100
+        cell.layer.transform = CATransform3DMakeScale(0.1, 0.1, 1)
+        
+        UIView.animate(withDuration: 0.5) {
+            cell.alpha = 1
+            cell.center.x += 100
+        }
+        UIView.animate(withDuration: 0.5) {
+            cell.layer.transform = CATransform3DMakeScale(1, 1, 1)
+        }
+        
         return cell
     }
-
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
             let selectedOrder = arrMyOrders[indexPath.row]

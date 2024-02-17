@@ -43,7 +43,6 @@ class CheckOutViewController: UIViewController, UICollectionViewDelegate, UIColl
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupActivityIndicator()
         let appleIcon = UIImage(systemName: "applelogo")
         payButton.setImage(appleIcon, for: .normal)
         payButton.setTitle("Pay", for: .normal)
